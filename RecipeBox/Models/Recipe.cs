@@ -19,6 +19,6 @@ public class Recipe
   public DateOnly RecipeDate { get; set; }
   public DateOnly PublishDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-  public List<RecipeIngredient> RecipeIngredients { get; set; }
+  public List<IngredientRecipe> IngredientRecipes { get; set; }
   // public List<RecipeType> RecipeTypes { get; }
 }
