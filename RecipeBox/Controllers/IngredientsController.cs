@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RecipeBox.Models;
 
 namespace RecipeBox.Controllers;
@@ -12,7 +13,11 @@ public class IngredientsController : Controller
   }
   public ActionResult Index()
   {
-    List<Ingredient> model = _db.Ingredients.ToList();
+    List<Ingredient> model = _db.Ingredients
+    .Include(i => i.IngredientRecipes)
+    .ToList();
     return View(model);
   }
+
+
 }
