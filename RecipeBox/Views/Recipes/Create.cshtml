@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Add A Recipe";
+}
+@model RecipeBox.Models.Recipe
+
+<h3>Add a recipe</h3>
+<hr />
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Title)
+  @Html.TextBoxFor(model => model.Title)
+  <br />
+  @Html.LabelFor(model => model.Description)
+  @Html.TextBoxFor(model => model.Description)
+  <br />
+  @Html.LabelFor(model => model.PhotoUrl)
+  @Html.TextBoxFor(model => model.PhotoUrl)
+  <br />
+  <input type="submit" value="Add" />
+}
+<p>eventually drop down to add type(brunch)</p>

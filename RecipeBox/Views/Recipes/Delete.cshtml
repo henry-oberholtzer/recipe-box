@@ -1,0 +1,8 @@
+@model RecipeBox.Models.Recipe
+
+<h2>Are you sure you want to delete "@Model.Title"?</h2>
+
+@using (Html.BeginForm())
+{
+  <input type="submit" value="Delete" />
+}

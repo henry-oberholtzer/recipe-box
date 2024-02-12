@@ -1,17 +1,20 @@
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeBox.Models;
 
 public class Recipe
 {
   public int RecipeId { get; set; }
+
+  [Required]
+  public string Title { get; set; }
+
+  [Required]
   public string Description { get; set; }
-  public string Instruction { get; set; }
-  public int Rating { get; set; }
+
+  [Display(Name = "Photo URL")]
   public string PhotoUrl { get; set; }
-  public DateOnly PublishDate { get; set; } = DateOnly.Now;
-  public int IngredientId { get; set; }
-  public Ingredient Ingredient { get; set; }
-  public List<RecipeType> JoinEntities { get; }
+  public DateOnly PublishDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+  // public List<RecipeType> RecipeTypes { get; }
 }

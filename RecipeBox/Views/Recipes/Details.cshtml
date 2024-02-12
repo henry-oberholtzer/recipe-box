@@ -1,0 +1,18 @@
+@{
+  ViewData["Title"] = "Recipe Details";
+}
+@model RecipeBox.Models.Recipe
+@using RecipeBox.Models
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+<p>Published: @Model.PublishDate.ToString("dd MMMM yyyy")</p>
+<img height="400rem" src="@Html.DisplayFor(model => model.PhotoUrl)" alt="recipe image" />
+<p>@Html.ActionLink("edit", "Edit", new { id = Model.RecipeId })</p>
+<p>@Html.ActionLink("delete", "Delete", new { id = Model.RecipeId })</p>
+<hr />
+<h4>@Html.DisplayFor(model => model.Description)</h4>
+<p>...Ingredients Here...</p>
+<h5>..Instructions here...</h5>
+<hr />
+<p>..Comments here?...</p>
+<button>add comment</button>

@@ -1,0 +1,10 @@
+@model List<Recipe>
+
+<ul>
+  @foreach (Recipe r in Model)
+  {
+    <li>
+      <h3>@Html.ActionLink(r.Title, "Details", "Recipes", new { id = r.RecipeId })</h3>
+    </li>
+  }
+</ul>

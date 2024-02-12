@@ -1,0 +1,27 @@
+@{
+    String action = Model["Action"];
+    String buttonText = "Add";
+    Recipe recipe = Model["Recipe"];
+    ViewData["Title"] = $"{action} Recipe";
+    if (action = "Edit")
+    {
+      buttonText = "Save";
+    }
+}
+
+<h3>@action Recipe</h3>
+<hr />
+@using (Html.BeginForm(action, "Recipes"))
+{
+  @Html.LabelFor(recipe => recipe.Title)
+  @Html.TextBoxFor(recipe => recipe.Title)
+  <br />
+  @Html.LabelFor(recipe => recipe.Description)
+  @Html.TextBoxFor(recipe => recipe.Description)
+  <br />
+  @Html.LabelFor(recipe => recipe.PhotoUrl)
+  @Html.TextBoxFor(recipe => recipe.PhotoUrl)
+  <br />
+  <input type="submit" value=@buttonText />
+}
+<p>eventually drop down to add type(brunch)</p>
