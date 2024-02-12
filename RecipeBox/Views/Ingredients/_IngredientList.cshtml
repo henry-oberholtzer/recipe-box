@@ -8,6 +8,6 @@
 
 @foreach (Ingredient i in Model)
 {
-  <li>@Html.ActionLink($"{i.Name} - Used in ${i.IngredientRecipes.Count()}", "Details", "Ingredients")</li>
+  <li>@Html.ActionLink($"{i.Name} - Used in {i.IngredientRecipes.Count()} recipes", "Details", "Ingredients", new { id = i.IngredientId })</li>
 }
 </ul>

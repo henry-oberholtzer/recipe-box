@@ -1,0 +1,24 @@
+@model Ingredient
+@{
+  List<Recipe> recipes = new(){};
+  foreach(IngredientRecipe iR in Model.IngredientRecipes)
+  {
+    recipes.Add(iR.Recipe);
+  }
+  string deleteAdvice = "This ingredient cannot be deleted until it has been removed from all recipes";
+  string deleteStatus = "disabled";
+  if (Model.IngredientRecipes.Count == 0)
+  {
+    deleteStatus = "";
+    deleteAdvice = "";
+  }
+}
+
+<h1>@Model.Name</h1>
+<p>This ingredient has been used in @Model.IngredientRecipes.Count recipes</p>
+<form asp-controller="Ingredients" asp-action="Delete" asp-route-id=@Model.IngredientId method="post">
+  <button class="btn btn-danger" @deleteStatus>Delete</button>
+  <p style="font-weight: 300">@deleteAdvice</p>
+</form>
+<hr />
+@await Html.PartialAsync("../Recipes/_RecipeList", recipes)

@@ -44,4 +44,46 @@ public class IngredientsController : Controller
     return RedirectToAction("Details", new { id = ingredient.IngredientId});
   }
 
+  public ActionResult Edit(int id)
+  {
+    Ingredient target = _db.Ingredients.FirstOrDefault(i => i.IngredientId == id);
+    return View(IngredientFormModel(target, "Edit"));
+  }
+  [HttpPost]
+  public ActionResult Edit(Ingredient ingredient)
+  {
+    if (!ModelState.IsValid)
+    {
+      return View(IngredientFormModel(ingredient, "Edit"));
+    }
+    _db.Ingredients.Update(ingredient);
+    _db.SaveChanges();
+    return RedirectToAction("Details", new { id = ingredient.IngredientId});
+  }
+
+  public ActionResult Details(int id)
+  {
+    Ingredient ingredient = _db.Ingredients
+    .Include(i => i.IngredientRecipes)
+    .ThenInclude(iR => iR.Recipe)
+    .FirstOrDefault(i => i.IngredientId == id);
+    return View(ingredient);
+  }
+
+  [HttpPost]
+  public ActionResult Delete(int id)
+  {
+    Ingredient target = _db.Ingredients.Include(i => i.IngredientRecipes).FirstOrDefault(i => i.IngredientId == id);
+    if(target.IngredientRecipes.Count == 0)
+    {
+      _db.Ingredients.Remove(target);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+    else
+    {
+      return RedirectToAction("Details", new { id = target.IngredientId});
+    }
+  }
+
 }
