@@ -11,8 +11,8 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    [Migration("20240212183453_Initial")]
-    partial class Initial
+    [Migration("20240212223641_AddSteps")]
+    partial class AddSteps
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,9 +47,7 @@ namespace RecipeBox.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Instruction")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PhotoUrl")
@@ -58,9 +56,37 @@ namespace RecipeBox.Migrations
                     b.Property<DateOnly>("PublishDate")
                         .HasColumnType("date");
 
+                    b.Property<DateOnly>("RecipeDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("RecipeId");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
+                {
+                    b.Property<int>("RecipeStepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StepId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeStepId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("StepId");
+
+                    b.ToTable("RecipeSteps");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
@@ -82,6 +108,28 @@ namespace RecipeBox.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("RecipeTypes");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Step", b =>
+                {
+                    b.Property<int>("StepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StepIndex")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("StepId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Steps");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Type", b =>
@@ -109,6 +157,25 @@ namespace RecipeBox.Migrations
                     b.Navigation("Recipe");
                 });
 
+            modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
+                {
+                    b.HasOne("RecipeBox.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecipeBox.Models.Step", "Step")
+                        .WithMany("JoinEntities")
+                        .HasForeignKey("StepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("Step");
+                });
+
             modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
                 {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
@@ -126,6 +193,20 @@ namespace RecipeBox.Migrations
                     b.Navigation("Recipe");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Step", b =>
+                {
+                    b.HasOne("RecipeBox.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId");
+
+                    b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Step", b =>
+                {
+                    b.Navigation("JoinEntities");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Type", b =>
