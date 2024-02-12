@@ -23,7 +23,7 @@ namespace RecipeBox.Controllers
       return new Dictionary<string, object> {
         {"Action", action},
         {"Recipe", recipe}
-      }
+      };
     }
     public ActionResult Index()
     {
@@ -32,7 +32,8 @@ namespace RecipeBox.Controllers
     }
     public ActionResult Create()
     {
-      return View();
+      
+      return View(RecipeFormModel(new Recipe(), "Create"));
     }
 
     [HttpPost]
@@ -40,7 +41,7 @@ namespace RecipeBox.Controllers
     {
       if (!ModelState.IsValid)
       {
-        return View(recipe);
+        return View(RecipeFormModel(recipe, "Create"));
       }
       else
       {
@@ -60,12 +61,12 @@ namespace RecipeBox.Controllers
     public ActionResult Edit(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(RecipeFormModel(thisRecipe, "Edit"))
+      return View(RecipeFormModel(thisRecipe, "Edit"));
     }
     [HttpPost]
     public ActionResult Edit(Recipe recipe)
     {
-      _db.Recipes.Add(recipe);
+      _db.Recipes.Update(recipe);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
@@ -73,7 +74,7 @@ namespace RecipeBox.Controllers
     public ActionResult Delete(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(thisRecipe)
+      return View(thisRecipe);
     }
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
@@ -81,7 +82,7 @@ namespace RecipeBox.Controllers
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
       _db.Recipes.Remove(thisRecipe);
       _db.SaveChanges();
-      return RedirectToAction("Index")
+      return RedirectToAction("Index");
     }
   }
 }

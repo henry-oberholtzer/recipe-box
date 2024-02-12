@@ -3,7 +3,7 @@
     String buttonText = "Add";
     Recipe recipe = Model["Recipe"];
     ViewData["Title"] = $"{action} Recipe";
-    if (action = "Edit")
+    if (action == "Edit")
     {
       buttonText = "Save";
     }
@@ -13,15 +13,30 @@
 <hr />
 @using (Html.BeginForm(action, "Recipes"))
 {
-  @Html.LabelFor(recipe => recipe.Title)
-  @Html.TextBoxFor(recipe => recipe.Title)
-  <br />
-  @Html.LabelFor(recipe => recipe.Description)
-  @Html.TextBoxFor(recipe => recipe.Description)
-  <br />
-  @Html.LabelFor(recipe => recipe.PhotoUrl)
-  @Html.TextBoxFor(recipe => recipe.PhotoUrl)
-  <br />
+  @if (action == "Edit")
+  {
+    <input asp-for="@recipe.RecipeId" type="hidden" />
+  }
+  <div class="form-group">
+    <label asp-for="@recipe.Title"></label><br />
+    <input asp-for="@recipe.Title" type="text" placeholder="Title" /><br />
+    <span asp-validation-for="@recipe.Title"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@recipe.Description"></label><br />
+    <input asp-for="@recipe.Description" type="text" placeholder="Description" /><br />
+    <span asp-validation-for="@recipe.Description"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@recipe.PhotoUrl"></label><br />
+    <input asp-for="@recipe.PhotoUrl" type="text" placeholder="Image URL" /><br />
+    <span asp-validation-for="@recipe.PhotoUrl"></span><br />
+  </div>
+  <div class="form-group">
+    <label asp-for="@recipe.RecipeDate"></label><br />
+    <input asp-for="@recipe.RecipeDate" type="date" /><br />
+    <span asp-validation-for="@recipe.RecipeDate"></span><br />
+  </div>
   <input type="submit" value=@buttonText />
 }
 <p>eventually drop down to add type(brunch)</p>

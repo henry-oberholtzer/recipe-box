@@ -15,6 +15,9 @@ public class Recipe
 
   [Display(Name = "Photo URL")]
   public string PhotoUrl { get; set; }
+  [Display(Name = "Recipe Date")]
+
+  public DateOnly RecipeDate { get; set; }
   public DateOnly PublishDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
   // public List<RecipeType> RecipeTypes { get; }
 }
