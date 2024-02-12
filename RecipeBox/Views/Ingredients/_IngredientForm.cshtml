@@ -1,0 +1,26 @@
+@{
+    String action = Model["Action"];
+    String buttonText = "Add";
+    Ingredient ingredient = Model["Ingredient"];
+    ViewData["Title"] = $"{action} Ingredient";
+    if (action == "Edit")
+    {
+      buttonText = "Save";
+    }
+}
+
+<h3>@action Ingredient</h3>
+<hr />
+@using (Html.BeginForm(action, "Ingredients"))
+{
+  @if (action == "Edit")
+  {
+    <input asp-for="@ingredient.IngredientId" type="hidden" />
+  }
+  <div class="form-group">
+    <label asp-for="@ingredient.Name"></label><br />
+    <input asp-for="@ingredient.Name" type="text" placeholder="Title" /><br />
+    <span asp-validation-for="@ingredient.Name"></span><br />
+  </div>
+  <input type="submit" value=@buttonText />
+}
