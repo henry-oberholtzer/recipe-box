@@ -38,6 +38,41 @@ namespace RecipeBox.Migrations
                     b.ToTable("Ingredients");
                 });
 
+            modelBuilder.Entity("RecipeBox.Models.Meal", b =>
+                {
+                    b.Property<int>("MealId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("MealId");
+
+                    b.ToTable("Meals");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.MealRecipe", b =>
+                {
+                    b.Property<int>("MealRecipeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("MealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MealRecipeId");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("MealRecipes");
+                });
+
             modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
@@ -66,41 +101,6 @@ namespace RecipeBox.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
-                {
-                    b.Property<int>("RecipeTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RecipeTypeId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("RecipeTypes");
-                });
-
-            modelBuilder.Entity("RecipeBox.Models.Type", b =>
-                {
-                    b.Property<int>("TypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("TypeId");
-
-                    b.ToTable("Types");
-                });
-
             modelBuilder.Entity("RecipeBox.Models.Ingredient", b =>
                 {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
@@ -112,26 +112,26 @@ namespace RecipeBox.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
+            modelBuilder.Entity("RecipeBox.Models.MealRecipe", b =>
                 {
+                    b.HasOne("RecipeBox.Models.Meal", "Meal")
+                        .WithMany("JoinEntities")
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecipeBox.Models.Type", "Type")
-                        .WithMany("JoinEntities")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Meal");
 
                     b.Navigation("Recipe");
-
-                    b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.Type", b =>
+            modelBuilder.Entity("RecipeBox.Models.Meal", b =>
                 {
                     b.Navigation("JoinEntities");
                 });
