@@ -37,10 +37,10 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="861" y="202" name="Recipe">
+</datatypes><table x="847" y="201" name="Recipe">
 <row name="RecipeId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="RecipeType" row="RecipeId" />
+<default>NULL</default><relation table="RecipeMeal" row="RecipeId" />
 <relation table="RecipeIngredient" row="RecipeId" />
 <relation table="RecipeTag" row="RecipeId" />
 <relation table="RecipeComment" row="RecipeId" />
@@ -63,7 +63,7 @@
 <part>RecipeId</part>
 </key>
 </table>
-<table x="664" y="201" name="RecipeType">
+<table x="614" y="52" name="RecipeMeal">
 <row name="RecipeTypeId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -79,7 +79,7 @@
 <part>TypeId</part>
 </key>
 </table>
-<table x="1330" y="347" name="User">
+<table x="1438" y="437" name="User">
 <row name="UserId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="UserComment" row="UserId" />
@@ -92,20 +92,20 @@
 <part>UserId</part>
 </key>
 </table>
-<table x="521" y="203" name="Type">
-<row name="TypeId" null="1" autoincrement="1">
+<table x="471" y="50" name="Meal">
+<row name="MealId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="RecipeType" row="TypeId" />
+<default>NULL</default><relation table="RecipeMeal" row="TypeId" />
 </row>
 <row name="Name" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
-<part>TypeId</part>
+<part>MealId</part>
 </key>
 <comment>e.g. Brunch, Dinner, Snack</comment>
 </table>
-<table x="1281" y="201" name="Ingredient">
+<table x="1400" y="202" name="Ingredient">
 <row name="IngredientId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="RecipeIngredient" row="IngredientId" />
@@ -117,7 +117,7 @@
 <part>IngredientId</part>
 </key>
 </table>
-<table x="1040" y="201" name="RecipeIngredient">
+<table x="1180" y="198" name="RecipeIngredient">
 <row name="RecipeIngredientId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -133,7 +133,7 @@
 <part>IngredientId</part>
 </key>
 </table>
-<table x="529" y="351" name="Tag">
+<table x="385" y="350" name="Tag">
 <row name="TagId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="RecipeTag" row="TagId" />
@@ -146,7 +146,7 @@
 <part>TagId</part>
 </key>
 </table>
-<table x="670" y="350" name="RecipeTag">
+<table x="526" y="349" name="RecipeTag">
 <row name="RecipeTagId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -162,7 +162,7 @@
 <part>TagId</part>
 </key>
 </table>
-<table x="187" y="353" name="Category">
+<table x="43" y="352" name="Category">
 <row name="CategoryId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -173,7 +173,7 @@
 <part>CategoryId</part>
 </key>
 </table>
-<table x="361" y="351" name="CategoryTag">
+<table x="217" y="350" name="CategoryTag">
 <row name="CategoryTagId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -190,7 +190,7 @@
 <part>TagId</part>
 </key>
 </table>
-<table x="1050" y="515" name="Comment">
+<table x="1246" y="603" name="Comment">
 <row name="CommentId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="UserComment" row="CommentId" />
@@ -209,7 +209,7 @@
 <part>CommentId</part>
 </key>
 </table>
-<table x="1234" y="509" name="UserComment">
+<table x="1402" y="601" name="UserComment">
 <row name="UserCommentId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -225,7 +225,7 @@
 <part>UserId</part>
 </key>
 </table>
-<table x="855" y="514" name="RecipeComment">
+<table x="1008" y="596" name="RecipeComment">
 <row name="RecipeCommentId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -241,7 +241,7 @@
 <part>CommentId</part>
 </key>
 </table>
-<table x="1053" y="349" name="UserRecipe">
+<table x="1253" y="438" name="UserRecipe">
 <row name="UserRecipeId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -257,7 +257,7 @@
 <part>UserId</part>
 </key>
 </table>
-<table x="1238" y="58" name="Instruction">
+<table x="1427" y="51" name="Instruction">
 <row name="InstructionId" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="RecipeInstruction" row="InstructionId" />
@@ -272,7 +272,7 @@
 <part>InstructionId</part>
 </key>
 </table>
-<table x="1013" y="63" name="RecipeInstruction">
+<table x="1191" y="51" name="RecipeInstruction">
 <row name="RecipeInstructionId" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>

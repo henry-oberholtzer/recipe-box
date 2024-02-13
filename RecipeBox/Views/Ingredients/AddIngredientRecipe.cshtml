@@ -1,0 +1,9 @@
+@{
+  List<IngredientRecipe> ingredientRecipes = Model["Recipe"].IngredientRecipes;
+  string recipeTitle = Model["Recipe"].Title;
+}
+
+<h1>Add Ingredients to @recipeTitle</h1>
+@await Html.PartialAsync("_IngredientRecipeList", ingredientRecipes)
+<hr />
+@await Html.PartialAsync("_CreateIngredientRecipe")

@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace RecipeBox.Models;
@@ -19,5 +18,9 @@ public class Recipe
 
   public DateOnly RecipeDate { get; set; }
   public DateOnly PublishDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+
+  public List<IngredientRecipe> IngredientRecipes { get; set; }
+
   public List<MealRecipe> MealRecipes { get; }
+
 }
