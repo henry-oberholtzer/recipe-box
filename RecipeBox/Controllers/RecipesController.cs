@@ -99,19 +99,20 @@ namespace RecipeBox.Controllers
       {
         foreach (string mealName in mealNames)
         {
-          Meal meal = new Meal
+          Meal existingMeal = _db.Meals.FirstOrDefault(meal => meal.Name == mealName);
+
+          if (existingMeal == null)
           {
-            Name = mealName
-          };
-          _db.Meals.Add(meal);
-          _db.SaveChanges();
-          int mealId = meal.MealId;
-#nullable enable
-          MealRecipe? joinEntity = _db.MealRecipes.FirstOrDefault(join => join.MealId == mealId && join.RecipeId == recipe.RecipeId);
-#nullable disable
-          if (joinEntity == null & mealId != 0)
+            existingMeal = new Meal
+            { Name = mealName };
+            _db.Meals.Add(existingMeal);
+            _db.SaveChanges();
+          }
+          bool isAssociated = _db.MealRecipes.Any(join => join.MealId == existingMeal.MealId && join.RecipeId == recipe.RecipeId);
+
+          if (!isAssociated)
           {
-            _db.MealRecipes.Add(new MealRecipe() { MealId = mealId, RecipeId = recipe.RecipeId });
+            _db.MealRecipes.Add(new MealRecipe { MealId = existingMeal.MealId, RecipeId = recipe.RecipeId });
           }
         }
         _db.SaveChanges();
@@ -135,8 +136,6 @@ namespace RecipeBox.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
-
 
   }
 }
