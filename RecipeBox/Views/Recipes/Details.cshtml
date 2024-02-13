@@ -22,7 +22,7 @@ else
   @foreach(MealRecipe join in Model.MealRecipes)
   {
     <h6>@join.Meal.Name</h6>
-    @using (Html.BeginForm("DeleteJoin", "Recipes"))
+    @using (Html.BeginForm("DeleteMealRecipe", "Recipes"))
     {
       @Html.Hidden("joinId", @join.MealRecipeId)
       <input type="submit" value="delete" />
