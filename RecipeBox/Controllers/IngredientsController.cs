@@ -128,6 +128,16 @@ public class IngredientsController : Controller
     _db.IngredientRecipes.Add(ingRec);
     _db.SaveChanges();
     return RedirectToAction("AddIngredientRecipe", new { recipeId = ingRec.RecipeId});
-  } 
+  }
+
+  [HttpPost]
+  public ActionResult DeleteIngredientRecipe(int id)
+  {
+    IngredientRecipe target = _db.IngredientRecipes.FirstOrDefault(ir => ir.IngredientRecipeId == id);
+    _db.IngredientRecipes.Remove(target);
+    _db.SaveChanges();
+    return RedirectToAction("AddIngredientRecipe", new { recipeId = target.RecipeId});
+
+  }
 
 }
