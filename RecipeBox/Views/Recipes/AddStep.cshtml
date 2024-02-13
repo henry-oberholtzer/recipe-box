@@ -1,0 +1,43 @@
+@model RecipeBox.Models.Recipe
+
+@{
+  ViewData["Title"] = "Add Step";
+}
+
+<h1>Add Steps to @Model.RecipeId</h1>
+<hr />
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.RecipeId)
+
+  <div id="stepsContainer">
+    <div class="form-group">
+      <label for="step0">Step 1:</label>
+      <input class="form-control" type="text" id="step0" name="Steps[0].Description">
+    </div>
+  </div>
+
+  <button type="button" id="addStep" class="btn btn-success">Add Step</button>
+  <button type="submit" class="btn btn-primary">Add Steps</button>
+}
+
+<script>
+  var stepIndex = 1;
+  document.getElementById('addStep').addEventListener('click', function () {
+    var container = document.getElementById('stepsContainer');
+    var div = document.createElement('div');
+    div.classList.add('form-group');
+    var label = document.createElement('label');
+    label.setAttribute('for', 'step' + stepIndex);
+    label.textContent = 'Step ' + (stepIndex + 1) + ':';
+    var input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('class', 'form-control');
+    input.setAttribute('id', 'step' + stepIndex);
+    input.setAttribute('name', 'Steps[' + stepIndex + '].Description');
+    div.appendChild(label);
+    div.appendChild(input);
+    container.appendChild(div);
+    stepIndex++;
+  });
+</script>

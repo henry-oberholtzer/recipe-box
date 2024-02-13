@@ -1,0 +1,11 @@
+@model RecipeBox.Models.Step
+<h2>Add a Recipe</h2>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.StepId)
+  @Html.Label("Select Recipe")
+  @Html.DropDownList("RecipeId")
+
+  <input type="submit" value="Save" />
+}

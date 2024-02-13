@@ -56,6 +56,8 @@ namespace RecipeBox.Controllers
     public ActionResult Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
+      .Include(recipe => recipe.JoinEntities)
+      .ThenInclude(join => join.Step)
       .Include(recipe => recipe.MealRecipes)
       .ThenInclude(join => join.Meal)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
@@ -87,6 +89,42 @@ namespace RecipeBox.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    public ActionResult AddStep(int id)
+    {
+      Recipe thisRecipe = _db.Recipes
+      .Include(recipe => recipe.JoinEntities) // Include JoinEntities navigation property
+      .FirstOrDefault(recipe => recipe.RecipeId == id);
+
+      if (thisRecipe == null)
+      {
+        // Handle case when recipe is not found
+        return NotFound();
+      }
+
+      List<Step> steps = _db.Steps.ToList();
+      ViewBag.Steps = steps;
+      return View(thisRecipe);
+    }
+    [HttpPost]
+    public ActionResult AddStep(Recipe recipe, int[] stepIds)
+    {
+      if (stepIds != null && stepIds.Length > 0)
+      {
+        foreach (int stepId in stepIds)
+        {
+#nullable enable
+          RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => join.StepId == stepId && join.RecipeId == recipe.RecipeId);
+#nullable disable
+          if (joinEntity == null)
+          {
+            _db.RecipeSteps.Add(new RecipeStep() { StepId = stepId, RecipeId = recipe.RecipeId });
+            _db.SaveChanges();
+          }
+        }
+      }
+      return RedirectToAction("Details", new { id = recipe.RecipeId });
+}
     public ActionResult AddMeal(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipes => recipes.RecipeId == id);
@@ -128,14 +166,24 @@ namespace RecipeBox.Controllers
         return View(recipe);
       }
     }
+    
     [HttpPost]
-    public ActionResult DeleteJoin(int joinId)
+    public ActionResult DeleteRecipeStep(int joinId)
+    {
+      RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
+      _db.RecipeSteps.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+
+    [HttpPost]
+    public ActionResult DeleteMealRecipe(int joinId)
     {
       MealRecipe joinEntry = _db.MealRecipes.FirstOrDefault(entry => entry.MealRecipeId == joinId);
       _db.MealRecipes.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
   }
 }

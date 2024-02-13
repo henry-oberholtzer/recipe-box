@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBox.Models;
 
@@ -10,9 +11,10 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    partial class RecipeBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20240213175701_AddAllFiles")]
+    partial class AddAllFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,117 +28,16 @@ namespace RecipeBox.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
 
                     b.HasKey("IngredientId");
 
+                    b.HasIndex("RecipeId");
+
                     b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("RecipeBox.Models.IngredientRecipe", b =>
-                {
-                    b.Property<int>("IngredientRecipeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Unit")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientRecipeId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("IngredientRecipes");
-                });
-
-            modelBuilder.Entity("RecipeBox.Models.Meal", b =>
-                {
-                    b.Property<int>("MealId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("MealId");
-
-                    b.ToTable("Meals");
-                });
-
-
-            modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
-                {
-                    b.Property<int>("RecipeStepId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StepId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RecipeStepId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("StepId");
-
-                    b.ToTable("RecipeSteps");
-                });
-
-
-            modelBuilder.Entity("RecipeBox.Models.MealRecipe", b =>
-                {
-                    b.Property<int>("MealRecipeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MealRecipeId");
-
-                    b.HasIndex("MealId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("MealRecipes");
-                });
-
-            modelBuilder.Entity("RecipeBox.Models.Step", b =>
-                {
-                    b.Property<int>("StepId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StepIndex")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("StepId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Steps");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
@@ -167,25 +68,91 @@ namespace RecipeBox.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.IngredientRecipe", b =>
+            modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
                 {
-                    b.HasOne("RecipeBox.Models.Ingredient", "Ingredient")
-                        .WithMany("IngredientRecipes")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("RecipeStepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StepId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeStepId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("StepId");
+
+                    b.ToTable("RecipeSteps");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
+                {
+                    b.Property<int>("RecipeTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeTypeId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("RecipeTypes");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Step", b =>
+                {
+                    b.Property<int>("StepId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StepIndex")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("StepId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Steps");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Type", b =>
+                {
+                    b.Property<int>("TypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("TypeId");
+
+                    b.ToTable("Types");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Ingredient", b =>
+                {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
-                        .WithMany("IngredientRecipes")
+                        .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Ingredient");
-
                     b.Navigation("Recipe");
                 });
-
 
             modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
                 {
@@ -206,35 +173,24 @@ namespace RecipeBox.Migrations
                     b.Navigation("Step");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.MealRecipe", b =>
+            modelBuilder.Entity("RecipeBox.Models.RecipeType", b =>
                 {
-                    b.HasOne("RecipeBox.Models.Meal", "Meal")
-                        .WithMany("JoinEntities")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
                         .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Meal");
+                    b.HasOne("RecipeBox.Models.Type", "Type")
+                        .WithMany("JoinEntities")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Recipe");
-                });
 
-            modelBuilder.Entity("RecipeBox.Models.Ingredient", b =>
-                {
-                    b.Navigation("IngredientRecipes");
+                    b.Navigation("Type");
                 });
-
-            modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
-                {
-                    b.Navigation("IngredientRecipes");
-                });
-
 
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
                 {
@@ -255,10 +211,9 @@ namespace RecipeBox.Migrations
                     b.Navigation("JoinEntities");
                 });
 
-
-            modelBuilder.Entity("RecipeBox.Models.Meal", b =>
+            modelBuilder.Entity("RecipeBox.Models.Type", b =>
                 {
-                    b.Navigation("MealRecipes");
+                    b.Navigation("JoinEntities");
                 });
 #pragma warning restore 612, 618
         }
