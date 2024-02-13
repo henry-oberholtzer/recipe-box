@@ -97,7 +97,7 @@ namespace RecipeBox.Controllers
     {
       if (mealNames != null && mealNames.Length > 0)
       {
-        foreach (var mealName in mealNames)
+        foreach (string mealName in mealNames)
         {
           Meal meal = new Meal
           {
