@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RecipeBox.Models;
 
@@ -12,13 +13,37 @@ public class IngredientsController : Controller
     _db = db;
   }
 
-  private static Dictionary<string, object> IngredientFormModel(Ingredient ingredient, string action)
+  public static Dictionary<string, object> IngredientFormModel(Ingredient ingredient, string action)
   {
     return new Dictionary<string, object> {
       {"Ingredient", ingredient},
       {"Action", action}
     };
   }
+
+  //  Recipe recipe
+  public static Dictionary<string, object> IngredientRecipeFormModel(IngredientRecipe ingredientRecipe, SelectList ingredientList, Recipe recipe)
+  {
+
+    return new Dictionary<string, object> {
+      {"IngredientRecipe", ingredientRecipe},
+      {"IngredientList", ingredientList},
+      {"Recipe", recipe}
+    };
+  }
+
+  public SelectList IngredientsSelectList() 
+  {
+    return new SelectList(_db.Ingredients, "IngredientId", "Name");
+  }
+
+  public Recipe RecipeWithIngredients(int id) {
+    return _db.Recipes
+    .Include(i => i.IngredientRecipes)
+    .ThenInclude(ir => ir.Ingredient)
+    .FirstOrDefault(r => r.RecipeId == id);
+  }
+
   public ActionResult Index()
   {
     List<Ingredient> model = _db.Ingredients
@@ -86,15 +111,23 @@ public class IngredientsController : Controller
     }
   }
 
-  // [HttpPost]
-  // public ActionResult AddIngredientRecipe(IngredientRecipe ingRec)
-  // {
-  //   if(!ModelState.IsValid)
-  //   {
-  //   }
-  //   _db.IngredientRecipes.Add(ingRec);
-  //   _db.SaveChanges();
-  //   return RedirectToAction
-  // } 
+  [HttpGet("/Ingredients/AddIngredientRecipe/{recipeId}")]
+  public ActionResult AddIngredientRecipe(int recipeId)
+  {
+    // IngredientRecipeFormModel(new IngredientRecipe(), IngredientsSelectList(), RecipeWithIngredients(recipeId))
+    return View(IngredientRecipeFormModel(new IngredientRecipe(), IngredientsSelectList(), RecipeWithIngredients(recipeId)));
+  }
+
+  [HttpPost]
+  public ActionResult AddIngredientRecipe(IngredientRecipe ingRec)
+  {
+    if(!ModelState.IsValid)
+    {
+      return View(IngredientRecipeFormModel(ingRec, IngredientsSelectList(), RecipeWithIngredients(ingRec.RecipeId)));
+    }
+    _db.IngredientRecipes.Add(ingRec);
+    _db.SaveChanges();
+    return RedirectToAction("AddIngredientRecipe", new { recipeId = ingRec.RecipeId});
+  } 
 
 }

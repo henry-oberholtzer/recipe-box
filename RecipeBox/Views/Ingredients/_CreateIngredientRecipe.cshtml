@@ -1,15 +1,10 @@
-@* @await Html.PartialAsync("_IngredientRecipeForm", new Dictionary<string, object> {
-  {"IngredientRecipe", new IngredientRecipe()},
-  {"RecipeId", 1}
-  }) *@
-
 @{
   IngredientRecipe ingRec = Model["IngredientRecipe"];
-  int recipeId = Model["RecipeId"];
+  int recipeId = Model["Recipe"].RecipeId;
   SelectList ingredientList = Model["IngredientList"];
 }
 
-<form asp-action="AddIngredientRecipe" asp-controller="Ingredient">
+<form asp-action="AddIngredientRecipe" asp-controller="Ingredients" method="post">
   <div class="row">
     <div class="form-group col-sm-2">
       <input class="form-group" type="hidden" asp-for=@ingRec.RecipeId value=@recipeId />
@@ -28,8 +23,7 @@
     </div>
     <div class="form-group col-sm-6">
       <label asp-for=@ingRec.IngredientId hidden></label>
-      <select asp-for=@ingRec.IngredientId class="form-control">
-        <option selected>Placeholder</option>
+      <select asp-for=@ingRec.IngredientId class="form-control" asp-items="@ingredientList">
       </select>
     </div>
     <div class="form-group col-sm-2">

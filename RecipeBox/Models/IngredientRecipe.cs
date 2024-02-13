@@ -13,7 +13,7 @@ public class IngredientRecipe
 
   public int Amount { get; set; }
 
-  public Units Unit { get; set; }
+  public int Unit { get; set; }
   public Ingredient Ingredient { get; set; }
   public Recipe Recipe { get; set; }
 
