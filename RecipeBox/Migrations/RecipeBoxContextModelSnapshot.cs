@@ -155,7 +155,7 @@ namespace RecipeBox.Migrations
             modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
                 {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("JoinEntities")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -197,6 +197,11 @@ namespace RecipeBox.Migrations
                         .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
+                {
+                    b.Navigation("JoinEntities");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Step", b =>

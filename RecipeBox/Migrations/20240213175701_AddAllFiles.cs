@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipeBox.Migrations
 {
-    public partial class AddSteps : Migration
+    public partial class AddAllFiles : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,8 +78,6 @@ namespace RecipeBox.Migrations
                     StepId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     StepIndex = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RecipeId = table.Column<int>(type: "int", nullable: true)
                 },

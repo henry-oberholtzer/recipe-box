@@ -19,5 +19,6 @@ public class Recipe
 
   public DateOnly RecipeDate { get; set; }
   public DateOnly PublishDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+  public List<RecipeStep> JoinEntities { get; }
   // public List<RecipeType> RecipeTypes { get; }
 }

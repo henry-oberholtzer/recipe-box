@@ -12,7 +12,23 @@
 <hr />
 <h4>@Html.DisplayFor(model => model.Description)</h4>
 <p>...Ingredients Here...</p>
-<h5>..Instructions here...</h5>
+<h5>Steps:</h5>
 <hr />
-<p>..Comments here?...</p>
-<button>add comment</button>
+@if (Model.JoinEntities.Count == 0)
+{
+  <p>No instructions have been added to this recipe yet</p>
+  <p>@Html.ActionLink("Add Step", "AddStep", new { id = Model.RecipeId })</p>
+}
+else
+{
+  <ul>
+    @foreach (RecipeStep join in Model.JoinEntities)
+    {
+      <li>@join.Step.StepIndex</li>
+    }
+
+  </ul>
+  }
+  <hr />
+  <p>..Comments here?...</p>
+  <button>add comment</button>

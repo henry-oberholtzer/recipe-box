@@ -55,6 +55,8 @@ namespace RecipeBox.Controllers
     public ActionResult Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
+      .Include(recipe => recipe.JoinEntities)
+      .ThenInclude(join => join.Step)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
       return View(thisRecipe);
     }
@@ -87,7 +89,16 @@ namespace RecipeBox.Controllers
 
     public ActionResult AddStep(int id)
     {
-      Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
+      Recipe thisRecipe = _db.Recipes
+      .Include(recipe => recipe.JoinEntities) // Include JoinEntities navigation property
+      .FirstOrDefault(recipe => recipe.RecipeId == id);
+
+      if (thisRecipe == null)
+      {
+        // Handle case when recipe is not found
+        return NotFound();
+      }
+
       List<Step> steps = _db.Steps.ToList();
       ViewBag.Steps = steps;
       return View(thisRecipe);

@@ -11,8 +11,8 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    [Migration("20240212231416_AddUpdateStepsModel")]
-    partial class AddUpdateStepsModel
+    [Migration("20240213175701_AddAllFiles")]
+    partial class AddAllFiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -157,7 +157,7 @@ namespace RecipeBox.Migrations
             modelBuilder.Entity("RecipeBox.Models.RecipeStep", b =>
                 {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
-                        .WithMany()
+                        .WithMany("JoinEntities")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -199,6 +199,11 @@ namespace RecipeBox.Migrations
                         .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
+                {
+                    b.Navigation("JoinEntities");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
