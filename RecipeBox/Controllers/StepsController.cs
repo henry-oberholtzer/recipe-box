@@ -30,5 +30,34 @@ namespace RecipeBox.Controllers
       .FirstOrDefault(step => step.StepId == id);
       return View(thisStep);
     }
+
+    public ActionResult AddRecipe(int id)
+    {
+      Step thisStep = _db.Steps.FirstOrDefault(steps => steps.StepId == id);
+      ViewBag.RecipeId = new SelectList(_db.Recipes, "RecipeId", "Title");
+      return View(thisStep);
+    }
+    [HttpPost]
+    public ActionResult AddRecipe(Step step, int recipeId)
+    {
+#nullable enable
+      RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => (join.RecipeId == recipeId && join.StepId == step.StepId));
+#nullable disable
+      if (joinEntity == null && recipeId != 0)
+      {
+        _db.RecipeSteps.Add(new RecipeStep() { RecipeId = recipeId, StepId = step.StepId });
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = step.StepId });
+    }
+
+    [HttpPost]
+    public ActionResult DeleteJoin(int joinId)
+    {
+      RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
+      _db.RecipeSteps.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }

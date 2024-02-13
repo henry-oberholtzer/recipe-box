@@ -32,7 +32,7 @@ namespace RecipeBox.Controllers
     }
     public ActionResult Create()
     {
-      
+
       return View(RecipeFormModel(new Recipe(), "Create"));
     }
 
@@ -81,6 +81,41 @@ namespace RecipeBox.Controllers
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
       _db.Recipes.Remove(thisRecipe);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    public ActionResult AddStep(int id)
+    {
+      Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
+      List<Step> steps = _db.Steps.ToList();
+      ViewBag.Steps = steps;
+      return View(thisRecipe);
+    }
+    [HttpPost]
+    public ActionResult AddStep(Recipe recipe, int[] stepIds)
+    {
+      if (stepIds != null && stepIds.Length > 0)
+      {
+        foreach (int stepId in stepIds)
+        {
+#nullable enable
+          RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => join.StepId == stepId && join.RecipeId == recipe.RecipeId);
+#nullable disable
+          if (joinEntity == null)
+          {
+            _db.RecipeSteps.Add(new RecipeStep() { StepId = stepId, RecipeId = recipe.RecipeId });
+            _db.SaveChanges();
+          }
+        }
+      }
+      return RedirectToAction("Details", new { id = recipe.RecipeId });
+    }
+    [HttpPost]
+    public ActionResult DeleteJoin(int joinId)
+    {
+      RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
+      _db.RecipeSteps.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
