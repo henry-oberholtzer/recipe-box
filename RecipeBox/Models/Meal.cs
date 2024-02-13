@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace RecipeBox.Models;
 
-public class Type
+public class Meal
 {
-  public int TypeId { get; set; }
+  public int MealId { get; set; }
   public string Name { get; set; }
-  public List<RecipeType> JoinEntities { get; }
+  public List<MealRecipe> MealRecipes { get; }
 }

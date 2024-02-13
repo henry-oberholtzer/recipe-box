@@ -1,0 +1,28 @@
+@{
+  ViewData["Title"] = "Meal Type Details";
+}
+@using RecipeBox.Models
+@model RecipeBox.Models.Meal
+
+<h2>Details for @Html.DisplayFor(model => model.Name)</h2>
+
+@if (@Model.MealRecipes.Count == 0 || Model.MealRecipes == null)
+{
+  <p>This meal type is not attached to any recipes yet...</p>
+}
+else
+{
+  <h3>Recipes: </h3>
+  <ul>
+  @foreach (MealRecipe join in Model.MealRecipes)
+    {
+      <li>@join.Recipe.Title</li>
+      @using (Html.BeginForm("DeleteJoin", "Meals"))
+      {
+        @Html.Hidden("joinId", @join.MealRecipeId)
+        <input type="submit" value="delete" />
+      }
+    }
+  </ul>
+}
+<p>@Html.ActionLink("Add recipes to this type", "AddRecipe", new { id = Model.MealId })</p>

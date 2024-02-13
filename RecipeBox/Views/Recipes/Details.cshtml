@@ -11,6 +11,26 @@
 <p>@Html.ActionLink("delete", "Delete", new { id = Model.RecipeId })</p>
 <hr />
 <h4>@Html.DisplayFor(model => model.Description)</h4>
+<hr />
+@if (@Model.MealRecipes.Count == 0)
+{
+  <p>This recipe is not attached to any meal types...</p>
+}
+else
+{
+  <h5>Meal types for this recipe</h5>
+  @foreach(MealRecipe join in Model.MealRecipes)
+  {
+    <h6>@join.Meal.Name</h6>
+    @using (Html.BeginForm("DeleteJoin", "Recipes"))
+    {
+      @Html.Hidden("joinId", @join.MealRecipeId)
+      <input type="submit" value="delete" />
+    }
+  }
+}
+<p>@Html.ActionLink("Add type", "AddMeal", new { id = Model.RecipeId })</p>
+<hr />
 <p>...Ingredients Here...</p>
 <h5>..Instructions here...</h5>
 <hr />
