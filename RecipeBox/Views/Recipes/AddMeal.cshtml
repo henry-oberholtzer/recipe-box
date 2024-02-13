@@ -1,0 +1,29 @@
+@{
+  ViewData["Title"] = "Add meal to recipe";
+}
+@model RecipeBox.Models.Recipe
+
+<h2>Choose meal type(s) to add to: @Html.DisplayFor(model => model.Title)</h2>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.RecipeId)
+
+  <br />
+  <input type="checkbox" id="breakfast" name="mealNames[]" value="Breakfast">
+  <label for="breakfast">Breakfast</label>
+
+  <input type="checkbox" id="brunch" name="mealNames[]" value="Brunch">
+  <label for="brunch">Brunch</label>
+
+  <input type="checkbox" id="lunch" name="mealNames[]" value="Lunch">
+  <label for="lunch">Lunch</label>
+
+  <input type="checkbox" id="dinner" name="mealNames[]" value="Dinner">
+  <label for="dinner">Dinner</label>
+
+  <input type="checkbox" id="lateNight" name="mealNames[]" value="lateNight">
+  <label for="lateNight">Late Night</label>
+  <br />
+  <input type="submit" value="Add" />
+}
