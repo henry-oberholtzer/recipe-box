@@ -21,7 +21,6 @@ public class IngredientsController : Controller
     };
   }
 
-  //  Recipe recipe
   public static Dictionary<string, object> IngredientRecipeFormModel(IngredientRecipe ingredientRecipe, SelectList ingredientList, Recipe recipe)
   {
 
@@ -114,7 +113,6 @@ public class IngredientsController : Controller
   [HttpGet("/Ingredients/AddIngredientRecipe/{recipeId}")]
   public ActionResult AddIngredientRecipe(int recipeId)
   {
-    // IngredientRecipeFormModel(new IngredientRecipe(), IngredientsSelectList(), RecipeWithIngredients(recipeId))
     return View(IngredientRecipeFormModel(new IngredientRecipe(), IngredientsSelectList(), RecipeWithIngredients(recipeId)));
   }
 

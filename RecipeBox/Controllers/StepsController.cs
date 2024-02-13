@@ -25,7 +25,7 @@ namespace RecipeBox.Controllers
     public ActionResult Details(int id)
     {
       Step thisStep = _db.Steps
-      .Include(step => step.JoinEntities)
+      .Include(step => step.RecipeSteps)
       .ThenInclude(join => join.Recipe)
       .FirstOrDefault(step => step.StepId == id);
       return View(thisStep);

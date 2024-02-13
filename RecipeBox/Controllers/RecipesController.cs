@@ -56,8 +56,10 @@ namespace RecipeBox.Controllers
     public ActionResult Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
-      .Include(recipe => recipe.JoinEntities)
+      .Include(recipe => recipe.RecipeSteps)
       .ThenInclude(join => join.Step)
+      .Include(r => r.IngredientRecipes)
+      .ThenInclude(ir => ir.Ingredient)
       .Include(recipe => recipe.MealRecipes)
       .ThenInclude(join => join.Meal)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
@@ -93,7 +95,7 @@ namespace RecipeBox.Controllers
     public ActionResult AddStep(int id)
     {
       Recipe thisRecipe = _db.Recipes
-      .Include(recipe => recipe.JoinEntities) // Include JoinEntities navigation property
+      .Include(recipe => recipe.RecipeSteps) // Include JoinEntities navigation property
       .FirstOrDefault(recipe => recipe.RecipeId == id);
 
       if (thisRecipe == null)
@@ -107,11 +109,11 @@ namespace RecipeBox.Controllers
       return View(thisRecipe);
     }
     [HttpPost]
-    public ActionResult AddStep(Recipe recipe, int[] stepIds)
+    public ActionResult AddStep(Recipe recipe, int[] stepIndex)
     {
-      if (stepIds != null && stepIds.Length > 0)
+      if (stepIndex != null && stepIndex.Length > 0)
       {
-        foreach (int stepId in stepIds)
+        foreach (int stepId in stepIndex)
         {
 #nullable enable
           RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => join.StepId == stepId && join.RecipeId == recipe.RecipeId);
@@ -119,7 +121,18 @@ namespace RecipeBox.Controllers
           if (joinEntity == null)
           {
             _db.RecipeSteps.Add(new RecipeStep() { StepId = stepId, RecipeId = recipe.RecipeId });
-            _db.SaveChanges();
+            try
+            {
+              
+              _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine($"An error occurred while saving steps: {ex.Message}");
+              return View(recipe);
+            }
+    
+            
           }
         }
       }
@@ -183,7 +196,7 @@ namespace RecipeBox.Controllers
       MealRecipe joinEntry = _db.MealRecipes.FirstOrDefault(entry => entry.MealRecipeId == joinId);
       _db.MealRecipes.Remove(joinEntry);
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new { id = joinEntry.RecipeId});
     }
   }
 }

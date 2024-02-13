@@ -31,4 +31,8 @@ public enum Units
   Milligrams,
   Grams,
   Kilograms,
+
+  Slice,
+  Loaf,
+  x
 }

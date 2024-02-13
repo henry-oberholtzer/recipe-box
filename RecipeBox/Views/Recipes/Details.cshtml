@@ -31,10 +31,13 @@ else
 }
 <p>@Html.ActionLink("Add type", "AddMeal", new { id = Model.RecipeId })</p>
 <hr />
-<p>...Ingredients Here...</p>
+<h5>Ingredients:</h5>
+@await Html.PartialAsync("../Ingredients/_IngredientRecipeList", Model.IngredientRecipes)
+<a asp-route-id="@Model.RecipeId" asp-controller="Ingredients" asp-action="AddIngredientRecipe"><button class="btn btn-sm btn-primary">Add Ingredients</button></a>
+<hr />
 <h5>Steps:</h5>
 <hr />
-@if (Model.JoinEntities.Count == 0)
+@if (Model.RecipeSteps.Count == 0)
 {
   <p>No instructions have been added to this recipe yet</p>
   <p>@Html.ActionLink("Add Step", "AddStep", new { id = Model.RecipeId })</p>
@@ -42,7 +45,7 @@ else
 else
 {
   <ul>
-    @foreach (RecipeStep join in Model.JoinEntities)
+    @foreach (RecipeStep join in Model.RecipeSteps)
     {
       <li>@join.Step.StepIndex</li>
     }

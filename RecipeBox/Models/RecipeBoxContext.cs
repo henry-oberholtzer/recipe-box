@@ -20,7 +20,7 @@ public class RecipeBoxContext : DbContext
 
     modelBuilder.Entity<RecipeStep>()
         .HasOne(RecipeSteps => RecipeSteps.Recipe)
-        .WithMany(r => Recipe.RecipeStep)
+        .WithMany(r => r.RecipeSteps)
         .HasForeignKey(rs => rs.RecipeId);
 
     modelBuilder.Entity<RecipeStep>()

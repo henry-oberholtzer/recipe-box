@@ -7,6 +7,6 @@ public class Step
   public int StepId { get; set; }
   public string StepIndex { get; set;}
   public Recipe Recipe { get; set;}
-  public List<RecipeStep> JoinEntities { get; }
+  public List<RecipeStep> RecipeSteps { get; }
 
 }

@@ -6,31 +6,31 @@
 
 <h1>Add Steps to @Model.RecipeId</h1>
 <hr />
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddStep", "Recipes", "post"))
 {
   @Html.HiddenFor(model => model.RecipeId)
 
   <div id="stepsContainer">
     <div class="form-group">
       <label for="step0">Step 1:</label>
-      <input class="form-control" type="text" id="step0" name="Steps[0].Description">
+      <input class="form-control" type="text" id="step0" name="Steps[0].Description" />
     </div>
   </div>
 
   <button type="button" id="addStep" class="btn btn-success">Add Step</button>
-  <button type="submit" class="btn btn-primary">Add Steps</button>
+  <button type="submit" class="btn btn-primary" value="Add">Save Steps</button>
 }
 
-<script>
-  var stepIndex = 1;
+@* <script>
+  let stepIndex = 1;
   document.getElementById('addStep').addEventListener('click', function () {
-    var container = document.getElementById('stepsContainer');
-    var div = document.createElement('div');
+    const container = document.getElementById('stepsContainer');
+    const div = document.createElement('div');
     div.classList.add('form-group');
-    var label = document.createElement('label');
+    const label = document.createElement('label');
     label.setAttribute('for', 'step' + stepIndex);
     label.textContent = 'Step ' + (stepIndex + 1) + ':';
-    var input = document.createElement('input');
+    const input = document.createElement('input');
     input.setAttribute('type', 'text');
     input.setAttribute('class', 'form-control');
     input.setAttribute('id', 'step' + stepIndex);
@@ -40,4 +40,4 @@
     container.appendChild(div);
     stepIndex++;
   });
-</script>
+</script> *@
