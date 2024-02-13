@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow; //for search bar
+using System.Threading.Tasks.Dataflow;
+using Microsoft.EntityFrameworkCore.Metadata.Internal; //for search bar
 
 namespace RecipeBox.Controllers
 {
@@ -57,6 +58,8 @@ namespace RecipeBox.Controllers
       Recipe thisRecipe = _db.Recipes
       .Include(recipe => recipe.JoinEntities)
       .ThenInclude(join => join.Step)
+      .Include(recipe => recipe.MealRecipes)
+      .ThenInclude(join => join.Meal)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
       return View(thisRecipe);
     }
@@ -121,12 +124,64 @@ namespace RecipeBox.Controllers
         }
       }
       return RedirectToAction("Details", new { id = recipe.RecipeId });
+}
+    public ActionResult AddMeal(int id)
+    {
+      Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipes => recipes.RecipeId == id);
+      return View(thisRecipe);
     }
     [HttpPost]
-    public ActionResult DeleteJoin(int joinId)
+    public ActionResult AddMeal(Recipe recipe, string[] mealNames)
+    {
+      if (mealNames != null && mealNames.Length > 0)
+      {
+        foreach (string mealName in mealNames)
+        {
+          Meal existingMeal = _db.Meals.FirstOrDefault(meal => meal.Name == mealName);
+
+          if (existingMeal == null)
+          {
+            existingMeal = new Meal
+            { Name = mealName };
+            _db.Meals.Add(existingMeal);
+            _db.SaveChanges();
+          }
+          bool isAssociated = _db.MealRecipes.Any(join => join.MealId == existingMeal.MealId && join.RecipeId == recipe.RecipeId);
+
+          if (!isAssociated)
+          {
+            _db.MealRecipes.Add(new MealRecipe { MealId = existingMeal.MealId, RecipeId = recipe.RecipeId });
+          }
+        }
+        _db.SaveChanges();
+
+        return RedirectToAction("Details", new
+        {
+          id = recipe.RecipeId
+        });
+      }
+      else
+      {
+        ModelState.AddModelError("", "Please select at least one meal type.");
+        return View(recipe);
+      }
+    }
+    
+    [HttpPost]
+    public ActionResult DeleteRecipeStep(int joinId)
     {
       RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
       _db.RecipeSteps.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+
+    [HttpPost]
+    public ActionResult DeleteMealRecipe(int joinId)
+    {
+      MealRecipe joinEntry = _db.MealRecipes.FirstOrDefault(entry => entry.MealRecipeId == joinId);
+      _db.MealRecipes.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

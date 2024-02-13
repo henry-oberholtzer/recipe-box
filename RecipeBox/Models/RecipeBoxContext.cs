@@ -6,11 +6,11 @@ public class RecipeBoxContext : DbContext
 {
   public DbSet<Recipe> Recipes { get; set; }
   public DbSet<Ingredient> Ingredients { get; set; }
-  public DbSet<Type> Types { get; set; }
-  public DbSet<RecipeType> RecipeTypes { get; set; }
   public DbSet<Step> Steps { get; set; }
   public DbSet<RecipeStep> RecipeSteps { get; set; }
-
+  public DbSet<IngredientRecipe> IngredientRecipes { get; set; }
+  public DbSet<Meal> Meals { get; set; }
+  public DbSet<MealRecipe> MealRecipes { get; set;}
   public RecipeBoxContext(DbContextOptions options) : base(options) { }
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

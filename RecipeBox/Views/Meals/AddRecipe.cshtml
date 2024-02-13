@@ -1,0 +1,15 @@
+@{
+  ViewData["Title"] = "Add recipe to meal type";
+}
+@model RecipeBox.Models.Meal
+
+<h2>Add a recipe to: @Html.DisplayFor(model => model.Name)</h2>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.MealId)
+  @Html.Label("Select Recipe")
+  @Html.DropDownList("RecipeId")
+
+  <input type="submit" value="Attach" />
+}
