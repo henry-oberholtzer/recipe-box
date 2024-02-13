@@ -1,0 +1,39 @@
+@* @await Html.PartialAsync("_IngredientRecipeForm", new Dictionary<string, object> {
+  {"IngredientRecipe", new IngredientRecipe()},
+  {"RecipeId", 1}
+  }) *@
+
+@{
+  IngredientRecipe ingRec = Model["IngredientRecipe"];
+  int recipeId = Model["RecipeId"];
+  SelectList ingredientList = Model["IngredientList"];
+}
+
+<form asp-action="AddIngredientRecipe" asp-controller="Ingredient">
+  <div class="row">
+    <div class="form-group col-sm-2">
+      <input class="form-group" type="hidden" asp-for=@ingRec.RecipeId value=@recipeId />
+      <label asp-for=@ingRec.Amount hidden></label>
+      <input type="number" class="form-control" asp-for="@ingRec.Amount">
+    </div>
+    <div class="form-group col-sm-2">
+      <label asp-for=@ingRec.Unit hidden></label>
+      <select asp-for=@ingRec.Unit class="form-control">
+        <option selected>Unit</option>
+        @foreach (int i in Enum.GetValues(typeof(Units)))
+        {
+          <option value=@i>@Enum.GetName(typeof(Units), i)</option>
+        }
+      </select>
+    </div>
+    <div class="form-group col-sm-6">
+      <label asp-for=@ingRec.IngredientId hidden></label>
+      <select asp-for=@ingRec.IngredientId class="form-control">
+        <option selected>Placeholder</option>
+      </select>
+    </div>
+    <div class="form-group col-sm-2">
+      <button class="btn btn-primary" type="submit">Add</button>
+    </div>
+  </div>
+</form>

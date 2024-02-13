@@ -86,4 +86,15 @@ public class IngredientsController : Controller
     }
   }
 
+  // [HttpPost]
+  // public ActionResult AddIngredientRecipe(IngredientRecipe ingRec)
+  // {
+  //   if(!ModelState.IsValid)
+  //   {
+  //   }
+  //   _db.IngredientRecipes.Add(ingRec);
+  //   _db.SaveChanges();
+  //   return RedirectToAction
+  // } 
+
 }
