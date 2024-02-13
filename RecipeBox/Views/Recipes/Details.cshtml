@@ -7,51 +7,45 @@
 <h2>@Html.DisplayFor(model => model.Title)</h2>
 <p>Published: @Model.PublishDate.ToString("dd MMMM yyyy")</p>
 <img height="400rem" src="@Html.DisplayFor(model => model.PhotoUrl)" alt="recipe image" />
-<p>@Html.ActionLink("edit", "Edit", new { id = Model.RecipeId })</p>
-<p>@Html.ActionLink("delete", "Delete", new { id = Model.RecipeId })</p>
+<div class="d-flex flex-row p-2 m-sm-1">
+<p class="col-sm-1">@Html.ActionLink("edit", "Edit", new { id = Model.RecipeId }, new { @class = "btn btn-warning btn-sm" })</p>
+<p class="col-sm-1">@Html.ActionLink("delete", "Delete", new { id = Model.RecipeId }, new { @class = "btn btn-danger btn-sm" })</p>
+</div>
 <hr />
 <h4>@Html.DisplayFor(model => model.Description)</h4>
 <hr />
+  <h5>Meal types for this recipe</h5>
 @if (@Model.MealRecipes.Count == 0)
 {
   <p>This recipe is not attached to any meal types...</p>
 }
 else
 {
-  <h5>Meal types for this recipe</h5>
+  <div class="d-flex flex-row">
   @foreach(MealRecipe join in Model.MealRecipes)
   {
-    <h6>@join.Meal.Name</h6>
-    @using (Html.BeginForm("DeleteMealRecipe", "Recipes"))
-    {
-      @Html.Hidden("joinId", @join.MealRecipeId)
-      <input type="submit" value="delete" />
-    }
+      <div class="col-sm-1 border rounded p-2 m-sm-1">
+        <h6>@join.Meal.Name</h6>
+        @using (@Html.BeginForm("DeleteMealRecipe", "Recipes"))
+        {
+          @Html.Hidden("joinId", @join.MealRecipeId)
+          <input type="submit" value="delete" class="btn btn-danger btn-sm"/>
+        }
+      </div>
   }
+  </div>
 }
-<p>@Html.ActionLink("Add type", "AddMeal", new { id = Model.RecipeId })</p>
+<p>@Html.ActionLink("Add type", "AddMeal", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm" })</p>
 <hr />
 <h5>Ingredients:</h5>
 @await Html.PartialAsync("../Ingredients/_IngredientRecipeList", Model.IngredientRecipes)
 <a asp-route-id="@Model.RecipeId" asp-controller="Ingredients" asp-action="AddIngredientRecipe"><button class="btn btn-sm btn-primary">Add Ingredients</button></a>
 <hr />
 <h5>Steps:</h5>
+@await Html.PartialAsync("../Steps/_StepsList", Model.Steps)
+<p>@Html.ActionLink("Add a step", "Create", "Steps", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
 <hr />
-@if (Model.RecipeSteps.Count == 0)
-{
-  <p>No instructions have been added to this recipe yet</p>
-  <p>@Html.ActionLink("Add Step", "AddStep", new { id = Model.RecipeId })</p>
-}
-else
-{
-  <ul>
-    @foreach (RecipeStep join in Model.RecipeSteps)
-    {
-      <li>@join.Step.StepIndex</li>
-    }
 
-  </ul>
-  }
   <hr />
   <p>..Comments here?...</p>
-  <button>add comment</button>
+  <button class="btn btn-info btn-sm">add comment</button>

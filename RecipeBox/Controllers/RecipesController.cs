@@ -56,8 +56,7 @@ namespace RecipeBox.Controllers
     public ActionResult Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
-      .Include(recipe => recipe.RecipeSteps)
-      .ThenInclude(join => join.Step)
+      .Include(recipe => recipe.Steps)
       .Include(r => r.IngredientRecipes)
       .ThenInclude(ir => ir.Ingredient)
       .Include(recipe => recipe.MealRecipes)
@@ -92,52 +91,6 @@ namespace RecipeBox.Controllers
       return RedirectToAction("Index");
     }
 
-    public ActionResult AddStep(int id)
-    {
-      Recipe thisRecipe = _db.Recipes
-      .Include(recipe => recipe.RecipeSteps) // Include JoinEntities navigation property
-      .FirstOrDefault(recipe => recipe.RecipeId == id);
-
-      if (thisRecipe == null)
-      {
-        // Handle case when recipe is not found
-        return NotFound();
-      }
-
-      List<Step> steps = _db.Steps.ToList();
-      ViewBag.Steps = steps;
-      return View(thisRecipe);
-    }
-    [HttpPost]
-    public ActionResult AddStep(Recipe recipe, int[] stepIndex)
-    {
-      if (stepIndex != null && stepIndex.Length > 0)
-      {
-        foreach (int stepId in stepIndex)
-        {
-#nullable enable
-          RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => join.StepId == stepId && join.RecipeId == recipe.RecipeId);
-#nullable disable
-          if (joinEntity == null)
-          {
-            _db.RecipeSteps.Add(new RecipeStep() { StepId = stepId, RecipeId = recipe.RecipeId });
-            try
-            {
-              
-              _db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-              Console.WriteLine($"An error occurred while saving steps: {ex.Message}");
-              return View(recipe);
-            }
-    
-            
-          }
-        }
-      }
-      return RedirectToAction("Details", new { id = recipe.RecipeId });
-}
     public ActionResult AddMeal(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipes => recipes.RecipeId == id);
@@ -180,15 +133,6 @@ namespace RecipeBox.Controllers
       }
     }
     
-    [HttpPost]
-    public ActionResult DeleteRecipeStep(int joinId)
-    {
-      RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
-      _db.RecipeSteps.Remove(joinEntry);
-      _db.SaveChanges();
-      return RedirectToAction("Index");
-    }
-
 
     [HttpPost]
     public ActionResult DeleteMealRecipe(int joinId)

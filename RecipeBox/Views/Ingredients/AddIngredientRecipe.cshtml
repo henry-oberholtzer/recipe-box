@@ -7,3 +7,5 @@
 @await Html.PartialAsync("_IngredientRecipeList", ingredientRecipes)
 <hr />
 @await Html.PartialAsync("_CreateIngredientRecipe")
+
+<p>@Html.ActionLink("return to recipe", "Details", "Recipes", new { id = Model["Recipe"].RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>

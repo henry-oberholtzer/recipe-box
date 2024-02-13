@@ -1,0 +1,20 @@
+@{
+  Step step = Model["Step"];
+  int recipeId = Model["Recipe"].RecipeId;
+
+}
+
+<form asp-action="Create" asp-controller="Steps" method="post">
+  <div class="row">
+      <input class="form-group" type="hidden" asp-for=@step.RecipeId value=@recipeId />
+      <label asp-for=@step.StepIndex hidden></label>
+      <input type="number" class="form-control" asp-for="@step.StepIndex" hidden>
+    <div class="form-group col-sm-10">
+      <label asp-for=@step.Description hidden></label>
+      <input type="text" class="form-control" asp-for="@step.Description" />
+    </div>
+    <div class="form-group col-sm-2">
+      <button class="btn btn-primary" type="submit">Add</button>
+    </div>
+  </div>
+</form>

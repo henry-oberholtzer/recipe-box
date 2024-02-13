@@ -22,42 +22,33 @@ namespace RecipeBox.Controllers
       return View(_db.Steps.ToList());
     }
 
-    public ActionResult Details(int id)
+    public static Dictionary<string, object> StepFormModel(Step step, Recipe recipe)
     {
-      Step thisStep = _db.Steps
-      .Include(step => step.RecipeSteps)
-      .ThenInclude(join => join.Recipe)
-      .FirstOrDefault(step => step.StepId == id);
-      return View(thisStep);
+      return new Dictionary<string, object> {
+        {"Step", step},
+        {"Recipe", recipe}
+      };
     }
 
-    public ActionResult AddRecipe(int id)
+    [HttpGet("/Steps/Create/{recipeId}")]
+    public ActionResult Create(int recipeId)
     {
-      Step thisStep = _db.Steps.FirstOrDefault(steps => steps.StepId == id);
-      ViewBag.RecipeId = new SelectList(_db.Recipes, "RecipeId", "Title");
-      return View(thisStep);
+      Recipe recipe = _db.Recipes.Include(r => r.Steps).FirstOrDefault(r => r.RecipeId == recipeId);
+      return View(StepFormModel(new Step(), recipe));
     }
+
     [HttpPost]
-    public ActionResult AddRecipe(Step step, int recipeId)
+    public ActionResult Create(Step step)
     {
-#nullable enable
-      RecipeStep? joinEntity = _db.RecipeSteps.FirstOrDefault(join => (join.RecipeId == recipeId && join.StepId == step.StepId));
-#nullable disable
-      if (joinEntity == null && recipeId != 0)
+      Recipe recipe = _db.Recipes.Include(r => r.Steps).FirstOrDefault(r => r.RecipeId == step.RecipeId);
+      if (!ModelState.IsValid)
       {
-        _db.RecipeSteps.Add(new RecipeStep() { RecipeId = recipeId, StepId = step.StepId });
-        _db.SaveChanges();
+        return View(StepFormModel(step, recipe));
       }
-      return RedirectToAction("Details", new { id = step.StepId });
-    }
-
-    [HttpPost]
-    public ActionResult DeleteJoin(int joinId)
-    {
-      RecipeStep joinEntry = _db.RecipeSteps.FirstOrDefault(entry => entry.RecipeStepId == joinId);
-      _db.RecipeSteps.Remove(joinEntry);
+      _db.Steps.Add(step);
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Create", new { recipeId = recipe.RecipeId});
+
     }
   }
 }

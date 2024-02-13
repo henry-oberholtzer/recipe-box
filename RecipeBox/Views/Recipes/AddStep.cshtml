@@ -1,7 +1,7 @@
 @model RecipeBox.Models.Recipe
 
 @{
-  ViewData["Title"] = "Add Step";
+  ViewData["Title"] = "Add Steps";
 }
 
 <h1>Add Steps to @Model.RecipeId</h1>
@@ -20,24 +20,3 @@
   <button type="button" id="addStep" class="btn btn-success">Add Step</button>
   <button type="submit" class="btn btn-primary" value="Add">Save Steps</button>
 }
-
-@* <script>
-  let stepIndex = 1;
-  document.getElementById('addStep').addEventListener('click', function () {
-    const container = document.getElementById('stepsContainer');
-    const div = document.createElement('div');
-    div.classList.add('form-group');
-    const label = document.createElement('label');
-    label.setAttribute('for', 'step' + stepIndex);
-    label.textContent = 'Step ' + (stepIndex + 1) + ':';
-    const input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('class', 'form-control');
-    input.setAttribute('id', 'step' + stepIndex);
-    input.setAttribute('name', 'Steps[' + stepIndex + '].Description');
-    div.appendChild(label);
-    div.appendChild(input);
-    container.appendChild(div);
-    stepIndex++;
-  });
-</script> *@

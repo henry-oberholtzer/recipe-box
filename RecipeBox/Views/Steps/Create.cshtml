@@ -1,0 +1,11 @@
+@{
+  List<Step> steps = Model["Recipe"].Steps;
+  string recipeTitle = Model["Recipe"].Title;
+}
+
+<h1>Add Steps to @recipeTitle</h1>
+@await Html.PartialAsync("_StepsList", steps)
+<hr />
+@await Html.PartialAsync("_AddStep")
+<hr />
+<p>@Html.ActionLink("return to recipe", "Details", "Recipes", new { id = Model["Recipe"].RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
