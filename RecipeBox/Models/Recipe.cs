@@ -26,7 +26,10 @@ public class Recipe
 
   public List<MealRecipe> MealRecipes { get; }
 
+  public List<Comment> Comments { get; set; }
+
   public List<RecipeTag> RecipeTags { get; }
+
 
 
 }

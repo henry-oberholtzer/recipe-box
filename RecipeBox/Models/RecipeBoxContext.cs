@@ -11,10 +11,11 @@ public class RecipeBoxContext : DbContext
   public DbSet<Meal> Meals { get; set; }
   public DbSet<MealRecipe> MealRecipes { get; set;}
 
+  public DbSet<Comment> Comments { get; set; }
+
   public DbSet<Tag> Tags { get; set; }
 
   public DbSet<RecipeTag> RecipeTags { get; set; }
+
   public RecipeBoxContext(DbContextOptions options) : base(options) { }
-
 }
-

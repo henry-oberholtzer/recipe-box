@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBox.Models;
 
@@ -10,9 +11,10 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    partial class RecipeBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20240214211844_PossibleChange")]
+    partial class PossibleChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,27 +153,6 @@ namespace RecipeBox.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.RecipeTag", b =>
-                {
-                    b.Property<int>("RecipeTagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RecipeTagId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("RecipeTags");
-                });
-
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
                 {
                     b.Property<int>("StepId")
@@ -203,19 +184,6 @@ namespace RecipeBox.Migrations
                         .IsRequired();
 
                     b.Navigation("Recipe");
-
-            modelBuilder.Entity("RecipeBox.Models.Tag", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("TagId");
-
-                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.IngredientRecipe", b =>
@@ -256,21 +224,6 @@ namespace RecipeBox.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("RecipeBox.Models.RecipeTag", b =>
-                {
-                    b.HasOne("RecipeBox.Models.Recipe", null)
-                        .WithMany("RecipeTags")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RecipeBox.Models.Tag", null)
-                        .WithMany("RecipeTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
                 {
                     b.HasOne("RecipeBox.Models.Recipe", "Recipe")
@@ -300,14 +253,7 @@ namespace RecipeBox.Migrations
 
                     b.Navigation("MealRecipes");
 
-                    b.Navigation("RecipeTags");
-
                     b.Navigation("Steps");
-                });
-
-            modelBuilder.Entity("RecipeBox.Models.Tag", b =>
-                {
-                    b.Navigation("RecipeTags");
                 });
 #pragma warning restore 612, 618
         }
