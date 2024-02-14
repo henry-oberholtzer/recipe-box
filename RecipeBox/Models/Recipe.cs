@@ -25,6 +25,6 @@ public class Recipe
   public List<IngredientRecipe> IngredientRecipes { get; set; }
 
   public List<MealRecipe> MealRecipes { get; }
-
+  public List<Comment> Comments { get; set; }
 
 }
