@@ -1,0 +1,10 @@
+@model TagViewModel
+
+<form class="row g-3 align-items-center" asp-action="Create" asp-controller="Tags" method="Post">
+  <input type="hidden" asp-for="@Model.RecipeId" value=@Model.RecipeId />
+  <label for="tags" class="form-label">Add tags, comma seperated:</label>
+  <div class="input-group mb-3">
+    <input name="tags" type="text" asp-for="@Model.Tags" value=@Model.Tags class="form-control" />
+    <button type="submit" class="btn btn-primary btn-sm">Add</button>
+  </div>
+</form> 

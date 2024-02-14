@@ -12,6 +12,37 @@ By Ravin Fisher, Henry Oberholtzer, Kim Robinson
 - Razor Pages
 
 ## User Stories
+* TODO   As a user, I want to rate my recipes, so I know which ones are the best.
+
+* TODO   As a user, I want to list my recipes by highest rated so I can see which ones I like the best
+
+* TODO Add more tags: GF, VEGAN ETC
+
+* IN PROGRESS  As a user, I want to add a recipe with ingredients and instructions, so I remember how to prepare my favorite dishes.
+
+* DONE As a user, I want to tag my recipes with different categories, so recipes are easier to find. A recipe can have many tags and a tag can have many recipes.
+
+* DONE  As a user, I want to be able to update and delete tags (Meals), so I can have flexibility with how I categorize recipes.
+
+* DONE As a user, I want to edit my recipes, so I can make improvements or corrections to my recipes.
+
+* DONE As a user, I want to be able to delete recipes I don't like or use, so I don't have to see them as choices.
+   
+* DONE   As a user, I want to see all recipes that use a certain ingredient, so I can more easily find recipes for the ingredients I have.
+
+## TODO (WED) Add authentication:
+
+    As a user, I want to create an account.
+    As a user, I want to be able to log in and log off.
+    As a user, I want to be able to see my account details.
+
+Add authorization:
+
+    As a user, I should only be able to create, read, update and delete if I am logged in. 
+
+OR
+
+    As a user, I should only be able to create, update and delete if I am logged in. All users should be able to have read functionality.
 
 ## Upcoming Changes
 
@@ -37,6 +68,7 @@ By Ravin Fisher, Henry Oberholtzer, Kim Robinson
 - To start the projet, in the production directory, run the command `dotnet run` on your terminal.
 
 ## Known Bugs
+* When a user goes to add a Meal type to a recipe if they don't choose any checkboxes nothing happens. I want an error msg and to stay on that page.  Temp fix: Breakfast box is checked as default. Otherwise it redirects to the page but is no longer attached to the recipe by Id anymore and no error msg shows.
 
 
 ## License

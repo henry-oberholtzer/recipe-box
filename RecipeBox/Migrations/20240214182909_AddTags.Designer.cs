@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBox.Models;
 
@@ -10,40 +11,15 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    partial class RecipeBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20240214182909_AddTags")]
+    partial class AddTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("RecipeBox.Models.Comment", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateOnly>("DatePosted")
-                        .HasColumnType("date");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("RecipeBox.Models.Ingredient", b =>
                 {
@@ -165,11 +141,9 @@ namespace RecipeBox.Migrations
 
                     b.HasKey("RecipeTagId");
 
-                    b.HasIndex("RecipeId");
-
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeTags");
+                    b.ToTable("RecipeTag");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
@@ -193,16 +167,6 @@ namespace RecipeBox.Migrations
 
                     b.ToTable("Steps");
                 });
-
-            modelBuilder.Entity("RecipeBox.Models.Comment", b =>
-                {
-                    b.HasOne("RecipeBox.Models.Recipe", "Recipe")
-                        .WithMany("Comments")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
 
             modelBuilder.Entity("RecipeBox.Models.Tag", b =>
                 {
@@ -258,12 +222,6 @@ namespace RecipeBox.Migrations
 
             modelBuilder.Entity("RecipeBox.Models.RecipeTag", b =>
                 {
-                    b.HasOne("RecipeBox.Models.Recipe", null)
-                        .WithMany("RecipeTags")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RecipeBox.Models.Tag", null)
                         .WithMany("RecipeTags")
                         .HasForeignKey("TagId")
@@ -294,13 +252,9 @@ namespace RecipeBox.Migrations
 
             modelBuilder.Entity("RecipeBox.Models.Recipe", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("IngredientRecipes");
 
                     b.Navigation("MealRecipes");
-
-                    b.Navigation("RecipeTags");
 
                     b.Navigation("Steps");
                 });

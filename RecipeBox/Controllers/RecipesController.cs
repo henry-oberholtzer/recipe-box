@@ -62,6 +62,8 @@ namespace RecipeBox.Controllers
       .Include(recipe => recipe.MealRecipes)
       .ThenInclude(join => join.Meal)
       .Include(recipe => recipe.Comments)
+      .Include(r => r.RecipeTags)
+      .ThenInclude(rt => rt.Tag)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
       return View(thisRecipe);
     }

@@ -22,9 +22,14 @@ public class Recipe
   public List<Step> Steps { get; }
 
 
-  public List<IngredientRecipe> IngredientRecipes { get; set; }
+  public List<IngredientRecipe> IngredientRecipes { get; }
 
   public List<MealRecipe> MealRecipes { get; }
+
   public List<Comment> Comments { get; set; }
+
+  public List<RecipeTag> RecipeTags { get; }
+
+
 
 }
