@@ -12,13 +12,13 @@ By Ravin Fisher, Henry Oberholtzer, Kim Robinson
 - Razor Pages
 
 ## User Stories
-* TODO   As a user, I want to rate my recipes, so I know which ones are the best.
-
 * TODO   As a user, I want to list my recipes by highest rated so I can see which ones I like the best
 
-* TODO Add more tags: GF, VEGAN ETC
+* DONE   As a user, I want to rate my recipes, so I know which ones are the best.
 
-* IN PROGRESS  As a user, I want to add a recipe with ingredients and instructions, so I remember how to prepare my favorite dishes.
+* DONE Add more tags: GF, VEGAN ETC
+
+* DONE  As a user, I want to add a recipe with ingredients and instructions, so I remember how to prepare my favorite dishes.
 
 * DONE As a user, I want to tag my recipes with different categories, so recipes are easier to find. A recipe can have many tags and a tag can have many recipes.
 
