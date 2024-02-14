@@ -18,7 +18,10 @@
     <input asp-for="@comment.CommentId" type="hidden" />
   }
   <div class="form-group">
-  <label asp-for="@comment.Body"></label><br />
+  <label asp-for="@comment.Body"></label>
+  <textarea asp-for="@comment.Body" class="form-control"></textarea>
+  <br />
+  <label asp-for="@comment.Rating">Rate</label>
   <select asp-for="@comment.Rating" class="form-select">
     <option value="1">1</option>
     <option value="2">2</option>
@@ -30,4 +33,3 @@
 </div>
   <input type="submit" value=@buttonText />
 }
-

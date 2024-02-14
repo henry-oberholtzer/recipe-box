@@ -25,11 +25,12 @@ namespace RecipeBox.Controllers
     }
 
     public static Dictionary<string, object>
-    CommentFormModel(Comment comment, Recipe recipe)
+    CommentFormModel(Comment comment, Recipe recipe, string action)
     {
       return new Dictionary<string, object> {
         {"Comment", comment},
-        {"Recipe", recipe}
+        {"Recipe", recipe},
+        {"Action", action}
       };
     }
 
@@ -37,7 +38,7 @@ namespace RecipeBox.Controllers
     public ActionResult Create(int recipeId)
     {
      Recipe recipe = _db.Recipes.Include(r => r.Comments).FirstOrDefault(r => r.RecipeId == recipeId);
-      return View(CommentFormModel(new Comment(), recipe));
+      return View(CommentFormModel(new Comment(), recipe, "Create"));
     }
 
     [HttpPost]
@@ -46,7 +47,7 @@ namespace RecipeBox.Controllers
      Recipe recipe = _db.Recipes.Include(r => r.Comments).FirstOrDefault(r => r.RecipeId == comment.RecipeId);
       if (!ModelState.IsValid)
       {
-        return View(CommentFormModel(comment, recipe));
+        return View(CommentFormModel(comment, recipe, "Create"));
       }
       _db.Comments.Add(comment);
       _db.SaveChanges();
