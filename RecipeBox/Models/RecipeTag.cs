@@ -7,8 +7,8 @@ public class RecipeTag
 
   public int TagId { get; set; }
 
-  public Tag Tag { get; }
+  public Tag Tag { get; set; }
 
-  public Recipe Recipe { get; }
+  public Recipe Recipe { get; set; }
 
 }

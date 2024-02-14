@@ -1,0 +1,15 @@
+@model TagListViewModel
+
+<section class="d-flex flex-row">
+@foreach (Tag tag in Model.Tags())
+{
+  <span>
+  @Html.ActionLink($"#{tag.Name}", "Details", "Tags", new { id = tag.TagId}, new { @class = "badge rounded-pill bg-light text-decoration-none text-reset m-sm-1"})
+    <form asp-controller="Tags" asp-action="DeleteRecipeTag" method="post">
+      <input name="recipeId" value="@Model.RecipeId" type="hidden"/>
+      <input name="tagId" value="@tag.TagId" type="hidden"/>
+      <button type="submit" class="badge btn btn-danger btn-sm rounded-pill text-sm">X</button>
+    </form>
+  </span>
+}
+</section>

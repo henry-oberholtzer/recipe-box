@@ -27,7 +27,7 @@ public class TagsController : Controller
         List<int> tagIds = new(){};
         foreach (string tagString in allTagStrings)
         {
-          string tagClean = $"#{tagString.ToLower().Trim()}";
+          string tagClean = tagString.ToLower().Trim();
           if(!_db.Tags.Any(t => t.Name == tagClean))
           {
             Tag tag = new(){
@@ -45,10 +45,19 @@ public class TagsController : Controller
             RecipeId = model.RecipeId,
             TagId = tagId
           };
-          _db.Add(recipeTag);
+          _db.RecipeTags.Add(recipeTag);
         }
         _db.SaveChanges();
       }
-      return RedirectToAction("Details", "Recipe", new { id = model.RecipeId });
+      return RedirectToAction("Details", "Recipes", new { id = model.RecipeId });
+    }
+
+    [HttpPost]
+    public ActionResult DeleteRecipeTag(int tagId, int recipeId)
+    {
+      RecipeTag target = _db.RecipeTags.FirstOrDefault(rt => rt.RecipeId == recipeId && rt.TagId == tagId);
+      _db.RecipeTags.Remove(target);
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Recipes", new { id = recipeId });
     }
 }

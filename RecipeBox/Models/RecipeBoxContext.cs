@@ -12,6 +12,8 @@ public class RecipeBoxContext : DbContext
   public DbSet<MealRecipe> MealRecipes { get; set;}
 
   public DbSet<Tag> Tags { get; set; }
+
+  public DbSet<RecipeTag> RecipeTags { get; set; }
   public RecipeBoxContext(DbContextOptions options) : base(options) { }
 
 }

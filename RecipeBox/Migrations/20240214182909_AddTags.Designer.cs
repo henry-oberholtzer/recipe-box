@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBox.Models;
 
@@ -10,9 +11,10 @@ using RecipeBox.Models;
 namespace RecipeBox.Migrations
 {
     [DbContext(typeof(RecipeBoxContext))]
-    partial class RecipeBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20240214182909_AddTags")]
+    partial class AddTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,11 +141,9 @@ namespace RecipeBox.Migrations
 
                     b.HasKey("RecipeTagId");
 
-                    b.HasIndex("RecipeId");
-
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeTags");
+                    b.ToTable("RecipeTag");
                 });
 
             modelBuilder.Entity("RecipeBox.Models.Step", b =>
@@ -222,12 +222,6 @@ namespace RecipeBox.Migrations
 
             modelBuilder.Entity("RecipeBox.Models.RecipeTag", b =>
                 {
-                    b.HasOne("RecipeBox.Models.Recipe", null)
-                        .WithMany("RecipeTags")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RecipeBox.Models.Tag", null)
                         .WithMany("RecipeTags")
                         .HasForeignKey("TagId")
@@ -261,8 +255,6 @@ namespace RecipeBox.Migrations
                     b.Navigation("IngredientRecipes");
 
                     b.Navigation("MealRecipes");
-
-                    b.Navigation("RecipeTags");
 
                     b.Navigation("Steps");
                 });

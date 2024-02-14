@@ -46,6 +46,10 @@ else
 <p>@Html.ActionLink("Add a step", "Create", "Steps", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
 <hr />
 <h5>Tags:</h5>
+@await Html.PartialAsync("../Tags/_TagList", new TagListViewModel {
+  RecipeTags = Model.RecipeTags,
+  RecipeId = Model.RecipeId
+})
 @await Html.PartialAsync("../Tags/_TagForm", new TagViewModel {
   RecipeId = Model.RecipeId
 })
