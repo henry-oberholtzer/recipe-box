@@ -20,8 +20,8 @@ namespace RecipeBox.Controllers
     }
     public ActionResult Index()
     {
-      // List<Comment> model = _db.Comments.Include(comment => comment.Recipe).ToList();
-      return View(_db.Comments.ToList());
+      List<Comment> model = _db.Comments.Include(comment => comment.Recipe).ToList();
+      return View(model);
     }
 
     public static Dictionary<string, object>
@@ -44,20 +44,15 @@ namespace RecipeBox.Controllers
     [HttpPost]
     public ActionResult Create(Comment comment)
     {
-     Recipe recipe = _db.Recipes.Include(r => r.Comments).FirstOrDefault(r => r.RecipeId == comment.RecipeId);
       if (!ModelState.IsValid)
       {
+        Recipe recipe = _db.Recipes.Include(r => r.Comments).FirstOrDefault(r => r.RecipeId == comment.RecipeId);
         return View(CommentFormModel(comment, recipe, "Create"));
       }
       _db.Comments.Add(comment);
       _db.SaveChanges();
-      return RedirectToAction("Create", new { recipeId = recipe.RecipeId});
+      return RedirectToAction("Create", new { recipeId = comment.RecipeId});
     }
-    // public ActionResult Edit(Comment comment)
-    // {
-    //   // Comment thisComment = _db.Comments.FirstOrDefault(comment => comment.CommentId == id);
-    //   // return View(thisComment);
-    // }
 
   }
 }

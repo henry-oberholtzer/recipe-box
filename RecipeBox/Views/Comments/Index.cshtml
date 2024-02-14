@@ -14,7 +14,7 @@ else
   <ul>
   @foreach (Comment comment in Model)
     {
-      <li>comment.Body | @comment.Recipe.Title</li>
+      <li>@comment.Body | @comment.Recipe.Title | @comment.Rating/5</li>
     }
   </ul>
 }
