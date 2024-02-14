@@ -1,0 +1,8 @@
+@model TagViewModel
+
+<form asp-action="Create" asp-controller="Tags" method="Post">
+  <p>Add tags, comma seperated:</p>
+  <input type="hidden" asp-for="@Model.RecipeId" value=@Model.RecipeId />
+  <input type="text" asp-for="@Model.Tags" value=@Model.Tags />
+  <button type="submit">Add</button>
+</form> 
