@@ -12,6 +12,4 @@ public class RecipeBoxContext : DbContext
   public DbSet<MealRecipe> MealRecipes { get; set;}
   public DbSet<Comment> Comments { get; set; }
   public RecipeBoxContext(DbContextOptions options) : base(options) { }
-
 }
-

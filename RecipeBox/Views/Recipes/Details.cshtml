@@ -46,6 +46,25 @@ else
 <p>@Html.ActionLink("Add a step", "Create", "Steps", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
 <hr />
 
-  <hr />
-  <p>..Comments here?...</p>
-  <button class="btn btn-info btn-sm">add comment</button>
+<hr />
+<h5>Comments:</h5>
+@await Html.PartialAsync("../Comments/_CommentsList", Model.Comments)
+<p>@Html.ActionLink("Add a comment", "Create", "Comments", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
+@* @if (@Model.Comments.Count == 0)
+{
+  <h4>No comments for this recipe yet...</h4>
+}
+else
+{
+  <h3>Comments:</h3>
+  @foreach (Comment comment in Model.Comments)
+  {
+    <div class="border">
+      <p>@comment.DatePosted</p>
+      <p>@comment.Rating</p>
+      <p>@comment.Body</p>
+    </div>
+  }
+} *@
+ 
+

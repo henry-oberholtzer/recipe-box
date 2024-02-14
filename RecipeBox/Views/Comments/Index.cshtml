@@ -1,0 +1,24 @@
+@{
+  ViewData["Title"] = "Comments";
+}
+<h2>Comments</h2>
+@using RecipeBox.Models;
+@model List<RecipeBox.Models.Comment>;
+
+@if (@Model.Count == 0)
+{
+  <h3>No comments have been added yet!</h3>
+}
+else
+{
+  <ul>
+  @foreach (Comment comment in Model)
+    {
+      <li>comment.Body | @comment.Recipe.Title</li>
+    }
+  </ul>
+}
+
+<p>@Html.ActionLink("Add new comment", "Create")</p>
+
+<p>sort by rating</p>

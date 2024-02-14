@@ -1,0 +1,25 @@
+@model List<Comment>
+<div class="list-group list-group-numbered">
+  @if (Model.Count == 0)
+  {
+    <h4 class="list-group-item d-flex justify-content-between align-items-center">No Comments</h4>
+  }
+  @foreach (Comment comment in Model)
+  {
+    <div class="border my-2 p-2">
+      <div class="row">
+        <div class="col-sm-6">
+          <h6 class="float-start">Rating: @comment.Rating</h6>
+        </div>
+        <div class="col-sm-6">
+          <p class="float-end">@comment.DatePosted</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h5>@comment.Body</h5>
+        </div>
+      </div>
+    </div>
+  }
+</div>

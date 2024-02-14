@@ -1,0 +1,33 @@
+@{
+  String action = Model["Action"];
+  String buttonText = "Add";
+  Comment comment = Model["Comment"];
+  ViewData["Title"] = $"{action} Comment";
+  if (action == "Edit")
+  {
+    buttonText = "Save";
+  }
+}
+
+<h3>@action Comment</h3>
+<hr />
+@using (Html.BeginForm(action, "Comments"))
+{
+  @if (action == "Edit")
+  {
+    <input asp-for="@comment.CommentId" type="hidden" />
+  }
+  <div class="form-group">
+  <label asp-for="@comment.Body"></label><br />
+  <select asp-for="@comment.Rating" class="form-select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <br />
+</div>
+  <input type="submit" value=@buttonText />
+}
+
