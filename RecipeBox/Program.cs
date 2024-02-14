@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeBox.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace RecipeBox
 {
@@ -13,6 +14,8 @@ namespace RecipeBox
 
       builder.Services.AddControllersWithViews();
 
+      
+
       builder.Services.AddDbContext<RecipeBoxContext>(
                         dbContextOptions => dbContextOptions
                           .UseMySql(
@@ -21,11 +24,18 @@ namespace RecipeBox
                         )
                       );
 
+      builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<RecipeBoxContext>()
+                .AddDefaultTokenProviders();
+      
       WebApplication app = builder.Build();
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();
       app.UseRouting();
+
+      app.UseAuthentication(); 
+      app.UseAuthorization();
 
       app.MapControllerRoute(
         name: "default",
