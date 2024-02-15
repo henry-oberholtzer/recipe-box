@@ -1,6 +1,6 @@
 # RecipeBox
 
-A web application for tracking mechanics and the vehicles they're able to repair, built with C# and Razor Pages, using EFCore & MVC structure and a MySQL database.
+A web application for users to keep track of recipes, built with C#, using EFCore, Identity & MVC structure and a MySQL database.
 
 By Ravin Fisher, Henry Oberholtzer, Kim Robinson
 
@@ -9,7 +9,9 @@ By Ravin Fisher, Henry Oberholtzer, Kim Robinson
 - C#
 - MySQL
 - EFCore
-- Razor Pages
+
+![Recipe detail page-top](./RecipeBox/wwwroot/img/recipe1.png)
+![Recipe detail page2](/RecipeBox/wwwroot/img/recipe2.png)
 
 ## User Stories
 
