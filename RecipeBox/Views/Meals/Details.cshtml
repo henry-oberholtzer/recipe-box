@@ -16,12 +16,7 @@ else
   <ul>
   @foreach (MealRecipe join in Model.MealRecipes)
     {
-      <li>@join.Recipe.Title</li>
-      @using (Html.BeginForm("DeleteJoin", "Meals"))
-      {
-        @Html.Hidden("joinId", @join.MealRecipeId)
-        <input type="submit" value="delete" class="btn btn-danger btn-sm" />
-      }
+      <li>@Html.ActionLink(join.Recipe.Title, "Details", "Recipes", new { id = join.Recipe.RecipeId })</li>
     }
   </ul>
 }

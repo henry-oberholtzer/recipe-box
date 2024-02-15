@@ -1,13 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using RecipeBox.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.EntityFrameworkCore.Metadata.Internal; //for search bar
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -15,7 +8,7 @@ using RecipeBox.ViewModels;
 
 namespace RecipeBox.Controllers
 {
-  [Authorize]
+    [Authorize]
   public class RecipesController : Controller
   {
     private readonly RecipeBoxContext _db;
@@ -76,7 +69,7 @@ namespace RecipeBox.Controllers
       }
     }
     [AllowAnonymous] //only auth user see stepps/comments?
-    public ActionResult Details(int id)
+    public async Task<ActionResult> Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
       .Include(recipe => recipe.Steps)
@@ -88,13 +81,23 @@ namespace RecipeBox.Controllers
       .Include(r => r.RecipeTags)
       .ThenInclude(rt => rt.Tag)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(thisRecipe);
+      if(User.Identity.IsAuthenticated)
+      {
+        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        if (thisRecipe.User == currentUser)
+        {
+          return View(thisRecipe);
+        }
+      }
+      return View("DetailsPublic", thisRecipe);
     }
     public ActionResult Edit(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
       return View(RecipeFormModel(thisRecipe, "Edit"));
     }
+
     [HttpPost]
     public ActionResult Edit(Recipe recipe)
     {

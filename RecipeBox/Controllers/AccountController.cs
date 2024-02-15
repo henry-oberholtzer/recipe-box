@@ -86,4 +86,8 @@ public class AccountController : Controller
     return RedirectToAction("Index");
   }
 
+  // public PartialViewResult LogIn()
+  // {
+  //   return PartialView("~/Views/Account/_Login.cshtml");
+  // }
 }
