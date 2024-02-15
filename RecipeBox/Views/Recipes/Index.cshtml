@@ -1,2 +1,10 @@
+@model IndexViewModel
+
 <h1>All Recipes</h1>
-@await Html.PartialAsync("_RecipeList")
+@await Html.PartialAsync("_RecipeList", Model.AllRecipes)
+
+@if(Model.UserRecipes != null)
+{
+<h1>Recipes for @User.Identity.Name</h1>
+@await Html.PartialAsync("_RecipeList", Model.UserRecipes)
+}

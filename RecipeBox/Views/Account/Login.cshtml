@@ -1,0 +1,22 @@
+@model LoginViewModel
+
+<h2>Log in</h2>
+<hr />
+@if(!ViewData.ModelState.IsValid)
+{
+  @Html.ValidationSummary("Please fix the error(s) and resubmit the form:")
+}
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(m => m.Email)
+  @Html.TextBoxFor(m => m.Email)
+
+  @Html.LabelFor(m => m.Password)
+  @Html.EditorFor(m => m.Password)
+
+  <input type="submit" value="Log in" />
+}
+
+@Html.ActionLink("Register for an account", "Register")
+@Html.ActionLink("Back to accounts page", "Index")

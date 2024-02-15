@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace RecipeBox.Models;
+
 
 public class Recipe
 {
@@ -29,6 +31,7 @@ public class Recipe
   public List<Comment> Comments { get; set; }
 
   public List<RecipeTag> RecipeTags { get; }
+  public ApplicationUser User { get; set; }
 
 
 

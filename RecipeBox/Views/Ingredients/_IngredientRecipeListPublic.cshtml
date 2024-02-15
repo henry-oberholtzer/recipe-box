@@ -8,9 +8,6 @@
 @foreach (IngredientRecipe i in Model)
 {
   <li class="list-group-item d-flex justify-content-between align-items-center"><span>@i.Amount @Enum.GetName(typeof(Units), i.Unit) - @Html.ActionLink(i.Ingredient.Name, "Details", "Ingredients", new { id = i.IngredientId })</span>
-    <form asp-route-id=@i.IngredientRecipeId asp-controller="Ingredients" asp-action="DeleteIngredientRecipe" method="post">
-      <button type=submit class="btn btn-danger btn-sm">Delete</button>
-    </form>
   </li>
 }
 </ul>

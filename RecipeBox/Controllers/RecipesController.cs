@@ -1,21 +1,21 @@
-using System.Collections.Generic;
-using System.Linq;
 using RecipeBox.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.EntityFrameworkCore.Metadata.Internal; //for search bar
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using RecipeBox.ViewModels;
 
 namespace RecipeBox.Controllers
 {
+    [Authorize]
   public class RecipesController : Controller
   {
     private readonly RecipeBoxContext _db;
-    public RecipesController(RecipeBoxContext db)
+    private readonly UserManager<ApplicationUser> _userManager;
+    public RecipesController(UserManager<ApplicationUser> userManager, RecipeBoxContext db)
     {
+      _userManager = userManager;
       _db = db;
     }
 
@@ -26,10 +26,23 @@ namespace RecipeBox.Controllers
         {"Recipe", recipe}
       };
     }
-    public ActionResult Index()
+    [AllowAnonymous]
+    public async Task<ActionResult> Index()
     {
-      List<Recipe> model = _db.Recipes.ToList();
-      return View(model);
+      List<Recipe> allRecipes = _db.Recipes.ToList();
+      if(User.Identity.IsAuthenticated)
+      {
+      string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+      List<Recipe> userRecipes = _db.Recipes.Where(entry => entry.User.Id == currentUser.Id).ToList();
+      return View(new IndexViewModel{
+        AllRecipes = allRecipes,
+        UserRecipes = userRecipes,
+      });
+      }
+      return View(new IndexViewModel{
+        AllRecipes = allRecipes,
+      });
     }
     public ActionResult Create()
     {
@@ -38,7 +51,7 @@ namespace RecipeBox.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Recipe recipe)
+    public async Task<ActionResult> Create(Recipe recipe)
     {
       if (!ModelState.IsValid)
       {
@@ -46,14 +59,17 @@ namespace RecipeBox.Controllers
       }
       else
       {
-        {
-          _db.Recipes.Add(recipe);
-          _db.SaveChanges();
-          return RedirectToAction("Index");
-        }
+        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        recipe.User = currentUser;
+        _db.Recipes.Add(recipe);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+
       }
     }
-    public ActionResult Details(int id)
+    [AllowAnonymous] //only auth user see stepps/comments?
+    public async Task<ActionResult> Details(int id)
     {
       Recipe thisRecipe = _db.Recipes
       .Include(recipe => recipe.Steps)
@@ -65,13 +81,23 @@ namespace RecipeBox.Controllers
       .Include(r => r.RecipeTags)
       .ThenInclude(rt => rt.Tag)
       .FirstOrDefault(recipe => recipe.RecipeId == id);
-      return View(thisRecipe);
+      if(User.Identity.IsAuthenticated)
+      {
+        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        if (thisRecipe.User == currentUser)
+        {
+          return View(thisRecipe);
+        }
+      }
+      return View("DetailsPublic", thisRecipe);
     }
     public ActionResult Edit(int id)
     {
       Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
       return View(RecipeFormModel(thisRecipe, "Edit"));
     }
+
     [HttpPost]
     public ActionResult Edit(Recipe recipe)
     {
@@ -135,7 +161,7 @@ namespace RecipeBox.Controllers
         return View(recipe);
       }
     }
-    
+
 
     [HttpPost]
     public ActionResult DeleteMealRecipe(int joinId)
@@ -143,7 +169,7 @@ namespace RecipeBox.Controllers
       MealRecipe joinEntry = _db.MealRecipes.FirstOrDefault(entry => entry.MealRecipeId == joinId);
       _db.MealRecipes.Remove(joinEntry);
       _db.SaveChanges();
-      return RedirectToAction("Details", new { id = joinEntry.RecipeId});
+      return RedirectToAction("Details", new { id = joinEntry.RecipeId });
     }
   }
 }

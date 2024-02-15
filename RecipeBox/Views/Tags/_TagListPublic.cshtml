@@ -1,0 +1,10 @@
+@model TagListViewModel
+
+<section class="d-flex flex-row">
+@foreach (Tag tag in Model.Tags())
+{
+  <span>
+  @Html.ActionLink($"#{tag.Name}", "Details", "Tags", new { id = tag.TagId}, new { @class = "badge rounded-pill bg-light text-decoration-none text-reset m-sm-1"})
+  </span>
+}
+</section>

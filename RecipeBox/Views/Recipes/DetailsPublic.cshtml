@@ -1,0 +1,48 @@
+@{
+  ViewData["Title"] = "Recipe Details";
+}
+@model RecipeBox.Models.Recipe
+@using RecipeBox.Models
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+<p>Published: @Model.PublishDate.ToString("dd MMMM yyyy")</p>
+<img height="400rem" src="@Html.DisplayFor(model => model.PhotoUrl)" alt="recipe image" />
+<div class="d-flex flex-row p-2 m-sm-1">
+</div>
+<hr />
+<h4>@Html.DisplayFor(model => model.Description)</h4>
+<hr />
+  <h5>Meal types for this recipe</h5>
+@if (@Model.MealRecipes.Count == 0)
+{
+  <p>This recipe is not attached to any meal types...</p>
+}
+else
+{
+  <div class="d-flex flex-row">
+  @foreach(MealRecipe join in Model.MealRecipes)
+  {
+      <div class="col-sm-1 border rounded p-2 m-sm-1">
+        <h6>@join.Meal.Name</h6>
+      </div>
+  }
+  </div>
+}
+<hr />
+<h5>Ingredients:</h5>
+@await Html.PartialAsync("../Ingredients/_IngredientRecipeListPublic", Model.IngredientRecipes)
+<hr />
+<h5>Steps:</h5>
+@await Html.PartialAsync("../Steps/_StepsListPublic", Model.Steps)
+<hr />
+<h5>Tags:</h5>
+@await Html.PartialAsync("../Tags/_TagListPublic", new TagListViewModel {
+  RecipeTags = Model.RecipeTags,
+  RecipeId = Model.RecipeId
+})
+  <hr />
+
+<h5>Comments:</h5>
+@await Html.PartialAsync("../Comments/_CommentsList", Model.Comments)
+<p>@Html.ActionLink("Add a comment", "Create", "Comments", new { id = Model.RecipeId }, new { @class = "btn btn-primary btn-sm"})</p>
+
